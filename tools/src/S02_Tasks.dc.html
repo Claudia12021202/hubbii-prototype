@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動空間｜課程與任務</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+<div class="grid4">
+<section class="card" style="padding: 16px; gap: 2px"><span class="small muted">任務完成</span><b style="font-size: 24px">{{done}}／4</b></section>
+<section class="card" style="padding: 16px; gap: 2px"><span class="small muted">出席</span><b style="font-size: 24px">1／2</b><span class="small muted">另看回放 1 堂</span></section>
+<section class="card" style="padding: 16px; gap: 2px"><span class="small muted">收到回饋</span><b style="font-size: 24px">1</b></section>
+<section class="card" style="padding: 16px; gap: 2px"><span class="small muted">下一件事</span><b>{{nextThing}}</b></section>
+</div>
+<div class="layout">
+<div class="main">
+<section class="card" style="padding: 8px 16px">
+<div class="tablebox"><table>
+<thead><tr><th>天</th><th>每日課程</th><th>每日任務</th><th>進度回報</th><th>分享者回饋</th><th></th></tr></thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="4">
+<tr style="background: {{r.bg}}">
+<td><b>{{r.day}}</b><br><span class="small muted">{{r.title}}</span></td>
+<td><span class="chip {{r.cCls}}">{{r.cls}}</span></td>
+<td><span class="chip {{r.tCls}}">{{r.task}}</span></td>
+<td class="small">{{r.report}}</td>
+<td class="small">{{r.fb}}</td>
+<td><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px" onClick="{{r.pick}}" disabled="{{r.locked}}">{{r.btn}}</button></td>
+</tr>
+</sc-for>
+</tbody></table></div>
+</section>
+</div>
+<aside class="side">
+<section class="card">
+<span class="small muted">{{cur.day}}</span>
+<h3>{{cur.title}}</h3>
+<dl class="kv"><dt>課程</dt><dd>{{cur.classInfo}}</dd><dt>任務</dt><dd>{{cur.taskInfo}}</dd></dl>
+<sc-if value="{{canSubmit}}" hint-placeholder-val="{{ true }}">
+<div class="field"><label for="lk">作品連結</label><input id="lk" placeholder="貼上影片連結"></div>
+<div class="field"><label for="rp">進度回報</label><select id="rp" onChange="{{onRep}}"><option value="done">已完成</option><option value="half">做到一半</option><option value="stuck">卡關了，需要幫忙</option></select></div>
+<button type="button" class="btn" onClick="{{submit}}">送出</button>
+<a class="btn ghost" href="#">進入今晚的課</a>
+</sc-if>
+<sc-if value="{{hasFb}}" hint-placeholder-val="{{ false }}"><div class="note small">{{cur.fbFull}}</div></sc-if>
+<sc-if value="{{isPast}}" hint-placeholder-val="{{ false }}"><a class="btn ghost" href="#">看回放</a></sc-if>
+</section>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sel: 3, sub: false, rep: 'done' }; }
+  renderVals() {
+    const { sel, sub, rep } = this.state;
+    const RT = { done: '已完成', half: '做到一半', stuck: '卡關中' };
+    const D = [
+      { n: 1, day: 'Day 1・12/07', title: 'AI 自動字幕', cls: '已出席', cOn: true, task: '已提交', tOn: true, report: '已完成', fb: '有 1 則', fbFull: '吳佩真：字幕斷句很自然，下次試試換行位置。', classInfo: '已出席，可看回放', taskInfo: '幫 30 秒影片加字幕・已提交' },
+      { n: 2, day: 'Day 2・12/08', title: '字幕排版與樣式', cls: '看回放', cOn: true, task: '已提交', tOn: true, report: '已完成', fb: '等待中', fbFull: '', classInfo: '未出席，已看回放', taskInfo: '調整字幕樣式・已提交' },
+      { n: 3, day: 'Day 3・12/09', title: '配樂與節奏', cls: '今晚 20:00', cOn: false, task: sub ? (rep === 'done' ? '已提交' : '已回報') : '待提交', tOn: sub && rep === 'done', report: sub ? RT[rep] : '—', fb: '—', fbFull: '', classInfo: '今晚 20:00–21:00 直播', taskInfo: '幫影片配上音樂・23:59 截止' },
+      { n: 4, day: 'Day 4・12/10', title: '輸出與成果分享', cls: '未開放', cOn: false, task: '未開放', tOn: false, report: '—', fb: '—', fbFull: '', classInfo: '明天開放', taskInfo: '明天開放', locked: true }
+    ];
+    const rows = D.map((d) => ({ ...d, cCls: d.cOn ? 'on' : '', tCls: d.tOn ? 'on' : '', bg: d.n === sel ? '#f4f4f2' : 'transparent', locked: !!d.locked, btn: d.n === 3 && !sub ? '去完成' : '查看', pick: () => this.setState({ sel: d.n }) }));
+    const cur = D[sel - 1];
+    const done = 2 + (sub && rep === 'done' ? 1 : 0);
+    return {
+      rows, cur, done,
+      nextThing: sub ? '明天 Day 4 上課' : '今晚交 Day 3 任務',
+      canSubmit: sel === 3 && !sub, hasFb: !!cur.fbFull, isPast: sel < 3,
+      onRep: (e) => this.setState({ rep: e.target.value }),
+      submit: () => this.setState({ sub: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

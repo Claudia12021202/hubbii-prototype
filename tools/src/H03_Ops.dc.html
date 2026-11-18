@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動管理｜活動營運</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+
+<div class="grid4">
+<section class="card"><span class="small muted">今日出席</span><b style="font-size: 28px">6／8</b></section>
+<section class="card"><span class="small muted">Day 2 任務已提交</span><b style="font-size: 28px">3／8</b><div class="bar"><span style="width: 38%"></span></div></section>
+<section class="card"><span class="small muted">卡關中</span><b style="font-size: 28px">2 人</b></section>
+<section class="card"><span class="small muted">還沒處理</span><b style="font-size: 28px">{{left}} 件</b></section>
+</div>
+
+<section class="card">
+<div class="row between"><h2>今天要處理的事</h2><span class="small muted">12/09（三）・依急迫程度排序</span></div>
+<div class="tabs" role="group" aria-label="篩選">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4"><button type="button" class="{{f.cls}}" aria-pressed="{{f.on}}" onClick="{{f.pick}}">{{f.label}}（{{f.n}}）</button></sc-for>
+</div>
+<sc-for list="{{todo}}" as="t" hint-placeholder-count="5">
+<div class="item">
+<span class="chip"><i>{{t.kind}}</i>{{t.tag}}</span>
+<div class="grow"><b>{{t.title}}</b><span class="small muted">{{t.sub}}</span></div>
+<button type="button" class="btn" style="min-height: 40px" onClick="{{t.doA}}">{{t.a}}</button>
+<button type="button" class="btn ghost" style="min-height: 40px" onClick="{{t.doB}}">{{t.b}}</button>
+</div>
+</sc-for>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}"><div class="empty"><b>這一類都處理完了</b><span class="small muted">新的問題或狀況出現時會再列在這裡。</span></div></sc-if>
+</section>
+
+<section class="card">
+<h2>已處理（{{doneCount}}）</h2>
+<sc-for list="{{done}}" as="d" hint-placeholder-count="0">
+<div class="item"><span class="small" style="width: 20px">✓</span><div class="grow"><span>{{d.title}}</span><span class="small muted">{{d.result}}</span></div><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px" onClick="{{d.undo}}">復原</button></div>
+</sc-for>
+<sc-if value="{{noneDone}}" hint-placeholder-val="{{ true }}"><p class="small muted">還沒有處理任何事。</p></sc-if>
+</section>
+<p class="small muted">學員問題主理人和分享者林若涵都看得到，任一人回覆即可。</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { done: {}, f: 'all' }; }
+  renderVals() {
+    const s = this.state;
+    const ITEMS = [
+      ['q1', 'q', '問題', '卡關', '張雨彤：粗剪要剪到多長才算完成？', 'Day 2 任務・3 小時前・尚未回覆', '回覆', '已回覆', '交給分享者', '已交給林若涵'],
+      ['q2', 'q', '問題', '卡關', '黃柏翰：AI 素材畫風不一致怎麼辦？', 'Day 2 任務・1 小時前・尚未回覆', '回覆', '已回覆', '交給分享者', '已交給林若涵'],
+      ['c1', 'c', '內容', '待確認', '林若涵提交了 Day 3 課程與任務', '要在 12/10 19:00 前確認，學員才看得到', '確認並公開', '已確認並公開', '退回附原因', '已退回林若涵'],
+      ['p1', 'p', '學員', '缺席', '吳承恩兩天都沒出席，也沒交任務', '可能需要關心', '傳訊關心', '已傳訊關心', '先略過', '已略過'],
+      ['p2', 'p', '學員', '未提交', '李佳穎 Day 2 任務還沒交', '今天未出席，昨天有看回放', '提醒提交', '已提醒', '先略過', '已略過'],
+      ['p3', 'p', '學員', '補交', '陳冠宇補交了 Day 1 任務', '12/09 10:20 補交', '給個鼓勵', '已留言鼓勵', '先略過', '已略過'],
+      ['c2', 'c', '公告', '提醒', '最終作品 12/11 開放提交', '提醒大家開始準備', '發公告', '已發公告', '先略過', '已略過']
+    ];
+    const mark = (id, txt) => () => this.setState({ done: { ...s.done, [id]: txt } });
+    const open = ITEMS.filter((i) => !s.done[i[0]]);
+    const F = [['all', '全部'], ['q', '學員問題'], ['p', '學員狀況'], ['c', '內容與公告']];
+    const todo = open.filter((i) => s.f === 'all' || i[1] === s.f).map(([id, g, kind, tag, title, sub, a, aRes, b, bRes]) => ({ kind, tag, title, sub, a, b, doA: mark(id, aRes), doB: mark(id, bRes) }));
+    const done = ITEMS.filter((i) => s.done[i[0]]).map((i) => ({ title: i[4], result: s.done[i[0]], undo: () => { const d = { ...s.done }; delete d[i[0]]; this.setState({ done: d }); } }));
+    return {
+      left: open.length, todo, empty: todo.length === 0, done, doneCount: done.length, noneDone: done.length === 0,
+      filters: F.map(([k, l]) => ({ label: l, n: k === 'all' ? open.length : open.filter((i) => i[1] === k).length, on: s.f === k, cls: s.f === k ? 'cur' : '', pick: () => this.setState({ f: k }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

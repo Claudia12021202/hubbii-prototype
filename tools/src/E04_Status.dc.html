@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>報名狀態</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a class="cur" href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap" style="max-width: 800px">
+<sc-if value="{{isPending}}" hint-placeholder-val="{{ true }}"><div class="toast" role="status">報名已送出</div></sc-if>
+<section class="card">
+<div class="col" style="gap: 6px"><span class="role lrn">學習者</span><h1>初階 AI 影片交流</h1><p class="muted">12/14（一）–12/17（四）・每晚 20:00–21:00</p></div>
+<sc-if value="{{isPending}}" hint-placeholder-val="{{ true }}">
+<div class="col"><span class="chip" style="align-self: flex-start"><i>報名</i>待審核</span><p>主理人會在 12/12 招募截止前審核。審核通過才算錄取，結果出來會通知你。</p></div>
+</sc-if>
+<sc-if value="{{isAdmitted}}" hint-placeholder-val="{{ false }}">
+<div class="col"><span class="chip on" style="align-self: flex-start"><i>報名</i>已錄取</span><p>課前準備已在活動空間公開，記得在第一堂課前完成。</p><a class="btn" href="S02_Space.dc.html" style="align-self: flex-start">前往活動空間</a></div>
+</sc-if>
+<sc-if value="{{isRejected}}" hint-placeholder-val="{{ false }}">
+<div class="col"><span class="chip" style="align-self: flex-start"><i>報名</i>未錄取</span><p>這次沒有錄取。主理人留言：名額已滿，歡迎報名下一梯。</p><a class="btn ghost" href="E01_Explore.dc.html" style="align-self: flex-start">看看其他活動</a></div>
+</sc-if>
+<sc-if value="{{isClosed}}" hint-placeholder-val="{{ false }}">
+<div class="col"><span class="chip" style="align-self: flex-start"><i>招募</i>已截止報名</span><p>這個活動已停止招募。可以收藏或追蹤主理人，下次開放時會通知你。</p></div>
+</sc-if>
+<div class="col" style="gap: 8px">
+<b>報名進度</b>
+<ol class="steps">
+<li class="done"><span class="n" aria-hidden="true">✓</span>送出報名・12/09</li>
+<li class="{{s2}}"><span class="n" aria-hidden="true">2</span>主理人審核（12/12 23:59 前）</li>
+<li class="{{s3}}"><span class="n" aria-hidden="true">3</span>錄取後到活動空間完成課前準備</li>
+<li><span class="n" aria-hidden="true">4</span>12/14（一）20:00 第一堂課</li>
+</ol>
+</div>
+<div class="row"><a class="btn ghost" href="S01_LearnerList.dc.html">查看我參加的活動</a></div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"status":{"editor":"enum","options":["待審核","已錄取","未錄取","已截止"],"default":"待審核"},"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.props.status ?? '待審核';
+    const decided = s === '已錄取' || s === '未錄取';
+    return {
+      isPending: s === '待審核', isAdmitted: s === '已錄取', isRejected: s === '未錄取', isClosed: s === '已截止',
+      s2: decided ? 'done' : '', s3: s === '已錄取' ? 'done' : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

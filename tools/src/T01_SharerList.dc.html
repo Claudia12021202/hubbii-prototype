@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>我分享的活動</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a class="cur" href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<div class="col" style="gap: 6px"><span class="role shr">分享者</span><h1>我分享的活動</h1><p class="muted">別人邀請你擔任分享者的活動。你負責規劃課程與任務，主理人確認後才會公開。</p></div>
+<div class="row between" style="flex-wrap: wrap; gap: 12px">
+<div class="fgroup" role="group" aria-label="狀態篩選，可多選">
+<button type="button" class="fbtn {{allCls}}" aria-pressed="{{isAll}}" onClick="{{pickAll}}">全部（{{total}}）</button>
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="4"><button type="button" class="fbtn {{f.cls}}" aria-pressed="{{f.on}}" onClick="{{f.pick}}">{{f.label}}（{{f.n}}）</button></sc-for>
+</div>
+<div class="row" style="gap: 8px"><label for="so" class="small muted">排序</label><select id="so" onChange="{{onSort}}" style="font: inherit; min-height: 44px; padding: 0 10px; border: 1px solid #a9a9a5; border-radius: 8px; background: #fff"><option value="near">日期近到遠</option><option value="far">日期遠到近</option></select></div>
+</div>
+<div class="grid3">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="3">
+<a class="acard" href="{{c.href}}" style="opacity: {{c.op}}">
+<div class="ph" style="position: relative">封面<span class="chip" style="position: absolute; top: 10px; left: 10px; background: {{c.chipBg}}; color: {{c.chipFg}}; border-color: {{c.chipBg}}">{{c.status}}</span></div>
+<div class="bd">
+<span class="small muted">{{c.type}}・{{c.date}}</span>
+<h3>{{c.name}}</h3>
+<sc-if value="{{c.hasBar}}" hint-placeholder-val="{{ false }}"><div class="row" style="gap: 8px"><div class="bar" style="flex: 1"><span style="width: {{c.pct}}"></span></div><span class="small muted">{{c.prog}}</span></div></sc-if>
+<span class="small">{{c.next}}</span>
+<span class="small" style="font-weight: 600">{{c.go}}</span>
+</div>
+</a>
+</sc-for>
+</div>
+<sc-if value="{{none}}" hint-placeholder-val="{{ false }}"><div class="empty"><p>這裡目前沒有活動</p></div></sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { f: [], sort: 'near' }; }
+  renderVals() {
+    const s = this.state;
+    const D = [
+      { k: 'now', name: 'AI 旁白配音入門', type: '興趣社群', date: '12/07–12/10', d: 7, status: '進行中・Day 3', bar: 50, prog: 'Day 3 已提交 2／6', next: '今晚 20:30 上課・2 則提問待回覆・4 件作品待審閱', go: '分享工作區 →', href: 'T04_Live.dc.html' },
+      { k: 'inv', name: 'AI 剪輯技巧交流週', type: '技能分享社群', date: '12/19–12/21', d: 19, status: '待回覆邀請', next: '主理人許文哲邀請你分享 12/19 20:00–20:40，請在 12/13 前回覆', go: '查看邀請 →', href: 'T02_Invite.dc.html' },
+      { k: 'prep', name: '手機短片剪輯 3 日練習', type: '興趣社群', date: '12/14–12/16', d: 14, status: '準備中・尚未規劃', next: '已接受邀請，12/12 前規劃好 3 天課程並提交王思妤確認', go: '開始規劃課程 →', href: 'T03_Workspace.dc.html' }
+    ];
+    const F = [['inv', '待回覆邀請'], ['prep', '準備中'], ['now', '進行中'], ['end', '已結束']];
+    const ON = ['now'];
+    const list = D.filter((x) => s.f.length === 0 || s.f.includes(x.k)).sort((a, b) => (s.sort === 'near' ? Math.abs(a.d - 9) - Math.abs(b.d - 9) : Math.abs(b.d - 9) - Math.abs(a.d - 9)));
+    return {
+      total: D.length, isAll: s.f.length === 0, allCls: s.f.length === 0 ? 'cur' : '', pickAll: () => this.setState({ f: [] }),
+      filters: F.map(([k, l]) => { const on = s.f.includes(k); return { label: l, n: D.filter((x) => x.k === k).length, on, cls: on ? 'cur' : '', pick: () => this.setState({ f: on ? s.f.filter((x) => x !== k) : s.f.concat(k) }) }; }),
+      onSort: (e) => this.setState({ sort: e.target.value }),
+      cards: list.map((x) => ({ ...x, hasBar: !!x.bar, pct: (x.bar || 0) + '%', chipBg: ON.includes(x.k) ? '#1f1f1f' : '#fff', chipFg: ON.includes(x.k) ? '#fff' : '#1f1f1f', op: x.k === 'end' ? 0.75 : 1 })),
+      none: list.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

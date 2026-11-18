@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動詳情｜初階 AI 影片交流</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a class="cur" href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="E01_Explore.dc.html">探索活動</a> / 興趣社群</p>
+<div class="grid3" style="grid-template-columns: 2fr 1fr; gap: 8px">
+<div class="ph" style="height: 260px">活動封面</div>
+<div class="col" style="gap: 8px"><div class="ph" style="height: 126px">作品範例</div><div class="ph" style="height: 126px">上課畫面</div></div>
+</div>
+<div class="col" style="gap: 8px"><div class="chips"><span class="chip on"><i>招募</i>招募中</span><span class="chip"><i>類型</i>興趣社群</span><span class="chip"><i>程度</i>入門</span><span class="chip"><i>參與</i>個人完成・不用組隊</span></div><h1>初階 AI 影片交流</h1><p class="muted">AI 影音・12/14（一）–12/17（四）・每晚 20:00–21:00・線上</p></div>
+<nav class="row" aria-label="頁內導覽" style="gap: 4px; border-bottom: 1px solid #d6d6d2">
+<sc-for list="{{anchors}}" as="a" hint-placeholder-count="5"><a href="{{a.href}}" onClick="{{a.pick}}" style="padding: 12px 14px; text-decoration: none; color: #1f1f1f; border-bottom: {{a.line}}; font-weight: {{a.fw}}">{{a.label}}</a></sc-for>
+</nav>
+<div class="layout" style="align-items: flex-start">
+<div class="main">
+<section class="card" id="intro">
+<h2>活動說明</h2>
+<p>給對 AI 影片有興趣、但還沒剪過片的人。四個晚上各一堂線上課，從安裝工具開始教；課後有當天任務，跟著一步步做，最後每個人完成自己的第一支短片，再一起互看回饋。不用組隊，有問題隨時在問題與交流發問。</p>
+<dl class="kv"><dt>成果</dt><dd>一支 30–45 秒、有字幕和配樂的 AI 短片</dd><dt>參與方式</dt><dd>每天一堂線上課＋當天任務，個人完成</dd></dl>
+</section>
+<section class="card" id="plan">
+<h2>課程安排</h2>
+<div class="tablebox"><table>
+<thead><tr><th>日期</th><th>主題</th><th>當天會做</th></tr></thead>
+<tbody>
+<tr><td>Day 1・12/14</td><td>認識 AI 影片工具</td><td>用 AI 生成 5 段素材</td></tr>
+<tr><td>Day 2・12/15</td><td>把素材剪成故事</td><td>完成 30 秒粗剪</td></tr>
+<tr><td>Day 3・12/16</td><td>字幕與配樂</td><td>幫粗剪加上字幕和音樂</td></tr>
+<tr><td>Day 4・12/17</td><td>輸出與互相回饋</td><td>輸出成品，回饋 2 位同學</td></tr>
+</tbody></table></div>
+<p class="small muted">每日任務與課前準備會在錄取後，於活動空間公開。</p>
+</section>
+<section class="card" id="people">
+<h2>主理人與分享者</h2>
+<div class="grid2">
+<div class="row" style="align-items: flex-start"><span class="av" aria-hidden="true">周</span><div class="col" style="gap: 2px"><span class="role host">主理人</span><b>周亦辰</b><span class="small muted">辦過 6 場 AI 影音活動・追蹤者 120</span><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px; align-self: flex-start" onClick="{{follow}}">{{followText}}</button></div></div>
+<div class="row" style="align-items: flex-start"><span class="av" aria-hidden="true">吳</span><div class="col" style="gap: 2px"><span class="role shr">分享者</span><b>吳佩真</b><span class="small muted">影像剪輯師，帶過 3 梯新手課，負責四天的課程與任務</span></div></div>
+</div>
+</section>
+<section class="card" id="faq">
+<h2>常見問題</h2>
+<details><summary>完全沒剪過片可以參加嗎？</summary><p class="small muted" style="margin-top: 8px">可以，這場就是為新手設計的，從安裝工具開始教，不需要作品。</p></details>
+<details><summary>需要組隊嗎？</summary><p class="small muted" style="margin-top: 8px">不用。每個人完成自己的作品，但可以在作品交流互相看、留回饋。</p></details>
+<details><summary>要準備什麼？</summary><p class="small muted" style="margin-top: 8px">一台電腦即可。錄取後會在活動空間看到課前準備清單（安裝工具、加入群組）。</p></details>
+<details><summary>沒辦法每天上線怎麼辦？</summary><p class="small muted" style="margin-top: 8px">每堂課會提供回放，任務可以在隔天中午前補交。</p></details>
+<details><summary>需要付費嗎？</summary><p class="small muted" style="margin-top: 8px">[費用說明，請團隊確認]</p></details>
+</section>
+</div>
+<aside class="side" style="position: sticky; top: 16px">
+<section class="card">
+<div class="row between"><b style="font-size: 20px">剩 4 位</b><span class="small muted">共 10 位</span></div>
+<div class="bar"><span style="width: 60%"></span></div>
+<dl class="kv"><dt>期間</dt><dd>12/14–12/17</dd><dt>時間</dt><dd>每晚 20:00–21:00</dd><dt>條件</dt><dd>不需剪輯經驗，有電腦即可</dd><dt>截止</dt><dd>12/12（六）23:59</dd></dl>
+<div class="row" style="gap: 8px"><span class="small muted">報名狀態</span><span class="chip {{stCls}}"><i>報名</i>{{st}}</span></div>
+<div class="row" style="gap: 8px"><a class="btn" href="E03_Form.dc.html" style="flex: 1">報名</a><button type="button" onClick="{{save}}" aria-pressed="{{fav}}" aria-label="{{saveText}}" title="{{saveText}}" style="width: 48px; height: 48px; flex: none; border-radius: 999px; border: 1px solid #a9a9a5; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="{{hf}}" stroke="{{hs}}" stroke-width="1.8" stroke-linejoin="round"></path></svg></button></div>
+<p class="small muted">{{hint}}</p>
+</section>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sec: 'intro', applied: false, saved: false, follow: false }; }
+  renderVals() {
+    const s = this.state;
+    const A = [['intro', '活動說明'], ['plan', '課程安排'], ['people', '主理人與分享者'], ['faq', '常見問題']];
+    return {
+      anchors: A.map(([id, label]) => ({ label, href: '#' + id, line: s.sec === id ? '3px solid #1f1f1f' : '3px solid transparent', fw: s.sec === id ? 600 : 400, pick: () => this.setState({ sec: id }) })),
+      applied: s.applied, st: s.applied ? '待審核' : '未報名', stCls: '',
+      applyText: s.applied ? '已送出報名' : '報名', apply: () => this.setState({ applied: true }),
+      saveText: s.saved ? '取消收藏' : '收藏活動', save: () => this.setState({ saved: !s.saved }), fav: s.saved, hf: s.saved ? '#c2410c' : 'none', hs: s.saved ? '#c2410c' : '#1f1f1f',
+      followText: s.follow ? '已追蹤' : '追蹤', follow: () => this.setState({ follow: !s.follow }),
+      hint: s.saved ? '已收藏，可以在會員中心「收藏的活動」找到。報名需填寫報名表，由主理人審核。' : '填寫報名表，由主理人審核後錄取。點愛心可以收藏。'
+    };
+  }
+}
+</script>
+</body>
+</html>

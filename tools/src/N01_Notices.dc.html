@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>通知</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap" style="max-width: 860px">
+<h1>通知</h1>
+<div class="tabs" role="group" aria-label="依活動篩選"><button type="button" class="{{cAll}}" aria-pressed="{{oAll}}" onClick="{{sAll}}">全部</button><button type="button" class="{{cLrn}}" aria-pressed="{{oLrn}}" onClick="{{sLrn}}">我參加的</button><button type="button" class="{{cShr}}" aria-pressed="{{oShr}}" onClick="{{sShr}}">我分享的</button><button type="button" class="{{cHost}}" aria-pressed="{{oHost}}" onClick="{{sHost}}">我主辦的</button></div>
+<div class="col">
+<sc-if value="{{showShr}}" hint-placeholder-val="{{ true }}">
+<a class="item" href="T02_Invite.dc.html"><div class="grow"><span class="role shr">分享者</span><b>許文哲邀請你到「AI 剪輯技巧交流週」分享</b><span class="small muted">請在 12/13 前回覆・1 小時前</span></div><span class="small">未讀</span></a>
+</sc-if>
+<sc-if value="{{showHost}}" hint-placeholder-val="{{ true }}">
+<a class="item" href="H03_Manage.dc.html"><div class="grow"><span class="role host">主理人</span><b>從素材到短片：2 位學員在 Day 2 任務提問</b><span class="small muted">3 小時前</span></div><span class="small">未讀</span></a>
+</sc-if>
+<sc-if value="{{showLrn}}" hint-placeholder-val="{{ true }}">
+<a class="item" href="S02_Space.dc.html"><div class="grow"><span class="role lrn">學習者</span><b>AI 字幕與配樂入門週：Day 3 任務已公開</b><span class="small muted">今天</span></div><span class="small">未讀</span></a>
+</sc-if>
+<sc-if value="{{showShr}}" hint-placeholder-val="{{ true }}">
+<a class="item read" href="T03_Workspace.dc.html"><div class="grow"><span class="role shr">分享者</span><b>王思妤退回了「手機短片剪輯 3 日練習」的分享內容</b><span class="small muted">原因：Day 2 任務請寫出交付格式・昨天</span></div><span class="small muted">已讀</span></a>
+</sc-if>
+<sc-if value="{{showHost}}" hint-placeholder-val="{{ true }}">
+<a class="item read" href="H03_Manage.dc.html"><div class="grow"><span class="role host">主理人</span><b>林若涵已提交「從素材到短片」的分享內容，等你確認</b><span class="small muted">12/03・已處理</span></div><span class="small muted">已讀</span></a>
+</sc-if>
+<sc-if value="{{showLrn}}" hint-placeholder-val="{{ true }}">
+<a class="item read" href="S02_Space.dc.html"><div class="grow"><span class="role lrn">學習者</span><b>你已錄取「AI 字幕與配樂入門週」</b><span class="small muted">12/05</span></div><span class="small muted">已讀</span></a>
+</sc-if>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 'all' }; }
+  renderVals() {
+    const t = this.state.t;
+    const c = (k) => (t === k ? 'cur' : '');
+    const s = (k) => () => this.setState({ t: k });
+    return {
+      showLrn: t === 'all' || t === 'lrn', showShr: t === 'all' || t === 'shr', showHost: t === 'all' || t === 'host',
+      cAll: c('all'), cLrn: c('lrn'), cShr: c('shr'), cHost: c('host'),
+      oAll: t === 'all', oLrn: t === 'lrn', oShr: t === 'shr', oHost: t === 'host',
+      sAll: s('all'), sLrn: s('lrn'), sShr: s('shr'), sHost: s('host')
+    };
+  }
+}
+</script>
+</body>
+</html>

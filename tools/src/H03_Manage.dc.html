@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動管理｜從素材到短片</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a class="cur" href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="H01_HostList.dc.html">我主辦的</a> / 活動管理</p>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role host">主理人</span><h1>從素材到短片｜AI 影片創作交流</h1><p class="muted">興趣社群・12/08–12/11・每晚 19:00–20:00・分享者 林若涵</p></div><div class="chips"><span class="chip on"><i>活動</i>進行中・Day 2</span><span class="chip"><i>招募</i>開放候補</span></div></div>
+<div class="tabs" role="group" aria-label="活動管理"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">總覽</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">報名與錄取{{pendBadge}}</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">分享內容{{contentBadge}}</button><button type="button" class="{{c4}}" aria-pressed="{{o4}}" onClick="{{s4}}">活動營運</button><button type="button" class="{{c5}}" aria-pressed="{{o5}}" onClick="{{s5}}">成果與結案</button></div>
+
+<sc-if value="{{o1}}" hint-placeholder-val="{{ true }}">
+<div class="grid3">
+<section class="card"><span class="small muted">已錄取學員</span><b style="font-size: 28px">{{admitN}}／12</b></section>
+<section class="card"><span class="small muted">今天任務提交</span><b style="font-size: 28px">5／8</b><div class="bar"><span style="width: 62%"></span></div></section>
+<section class="card"><span class="small muted">待回覆問題</span><b style="font-size: 28px">2</b></section>
+</div>
+<section class="card">
+<h2>需要你處理</h2>
+<sc-if value="{{hasPend}}" hint-placeholder-val="{{ true }}"><button type="button" class="item" style="font: inherit; text-align: left; cursor: pointer; width: 100%" onClick="{{s2}}"><div class="grow"><b>{{pendN}} 位候補報名等你審核</b><span class="small muted">有學員退出，開放候補到 12/09 23:59</span></div><span class="small">前往 →</span></button></sc-if>
+<sc-if value="{{contentPending}}" hint-placeholder-val="{{ true }}"><button type="button" class="item" style="font: inherit; text-align: left; cursor: pointer; width: 100%" onClick="{{s3}}"><div class="grow"><b>確認分享內容的修改</b><span class="small muted">林若涵更新了 Day 4 任務，等你確認後才會公開</span></div><span class="small">前往 →</span></button></sc-if>
+<button type="button" class="item" style="font: inherit; text-align: left; cursor: pointer; width: 100%" onClick="{{s4}}"><div class="grow"><b>2 位學員在 Day 2 任務提問</b><span class="small muted">林若涵也看得到，你們其中一人回覆即可</span></div><span class="small">前往 →</span></button>
+</section>
+</sc-if>
+
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="row between"><div class="col" style="gap: 2px"><h2>待審核（{{pendN}}）</h2><span class="small muted">原本 12/06 截止；有學員退出，開放候補到 12/09 23:59，還有 {{seatsLeft}} 個名額</span></div><div class="row" style="gap: 8px"><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{admitAll}}" disabled="{{noPend}}">全部錄取</button></div></div>
+<sc-for list="{{pend}}" as="p" hint-placeholder-count="3">
+<div class="card" style="padding: 14px; gap: 8px; background: {{p.bg}}">
+<div class="row between" style="flex-wrap: wrap; gap: 8px">
+<div class="row" style="gap: 10px"><span class="av" aria-hidden="true">{{p.ini}}</span><div class="col" style="gap: 0"><b>{{p.name}}</b><span class="small muted">{{p.exp}}・報名於 {{p.when}}</span></div></div>
+<div class="row" style="gap: 8px; align-items: center">
+<sc-if value="{{p.isPending}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{p.toggle}}">{{p.moreText}}</button><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{p.no}}">不錄取</button><button type="button" class="btn" style="min-height: 40px" onClick="{{p.yes}}" disabled="{{p.full}}">錄取</button></sc-if>
+<sc-if value="{{p.decided}}" hint-placeholder-val="{{ false }}"><span class="chip {{p.chipCls}}"><i>報名</i>{{p.result}}</span></sc-if>
+</div>
+</div>
+<sc-if value="{{p.open}}" hint-placeholder-val="{{ false }}"><dl class="kv small"><dt>想參加的原因</dt><dd>{{p.why}}</dd><dt>作品連結</dt><dd>{{p.link}}</dd><dt>可參加時間</dt><dd>{{p.time}}</dd></dl></sc-if>
+<sc-if value="{{p.decided}}" hint-placeholder-val="{{ false }}"><span class="small muted">{{p.notice}}</span></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{noPend}}" hint-placeholder-val="{{ false }}"><p class="small muted">候補報名都審核完了。</p></sc-if>
+</section>
+<sc-if value="{{rejOpen}}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="true" aria-labelledby="rjt" style="position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px">
+<div class="card" style="max-width: 540px; width: 100%; gap: 14px; box-shadow: 0 12px 32px rgba(0,0,0,0.2)">
+<div class="col" style="gap: 2px"><h2 id="rjt">不錄取 {{rejName}}</h2><p class="small muted">原因會附在通知裡寄給對方，請寫得具體、友善。</p></div>
+<div class="row" style="gap: 6px; flex-wrap: wrap" role="group" aria-label="常用原因">
+<sc-for list="{{reasonChips}}" as="r" hint-placeholder-count="4"><button type="button" class="fbtn" onClick="{{r.pick}}">{{r.label}}</button></sc-for>
+</div>
+<div class="field"><label for="rr">不錄取原因（必填）</label><textarea id="rr" value="{{reason}}" onChange="{{onReason}}" placeholder="例如：這次以已有剪輯經驗的學員為主，推薦你報名入門的「AI 繪本動畫三日體驗」。" style="min-height: 110px"></textarea></div>
+<div class="row" style="justify-content: flex-end; gap: 8px"><button type="button" class="btn ghost" onClick="{{cancelRej}}">取消</button><button type="button" class="btn" onClick="{{submitRej}}" disabled="{{noReason}}">送出不錄取</button></div>
+</div>
+</div>
+</sc-if>
+<section class="card">
+<div class="row between"><h2>已審核</h2><span class="small muted">錄取 {{admitN}}・未錄取 {{rejectN}}</span></div>
+<div class="tablebox"><table>
+<thead><tr><th>姓名</th><th>經驗</th><th>想參加的原因</th><th>報名狀態</th><th>通知</th></tr></thead>
+<tbody>
+<tr><td>周子晴</td><td>沒剪過片</td><td>想做出第一支短片</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知與課前準備</td></tr>
+<tr><td>張雨彤</td><td>沒剪過片</td><td>想試試 AI 做影片</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知與課前準備</td></tr>
+<tr><td>李佳穎</td><td>剪過手機短片</td><td>學會用 AI 生成素材</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知與課前準備</td></tr>
+<tr><td>陳奕廷</td><td>有剪輯經驗</td><td>想找進階內容</td><td><span class="chip"><i>報名</i>未錄取</span></td><td class="small muted">已通知，建議改報進階活動</td></tr>
+</tbody></table></div>
+<p class="small muted">只列出部分名單。錄取後系統會一起發送課前準備資訊；活動已開始，候補錄取的人也會收到 Day 1–2 回放連結。</p>
+</section>
+</sc-if>
+
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="row between"><div><h2>分享內容</h2><p class="small muted">由林若涵規劃。你只能確認並公開，或退回附原因，不能直接修改。</p></div><span class="chip {{contentChipCls}}"><i>分享內容</i>{{contentText}}</span></div>
+<div class="tablebox"><table>
+<thead><tr><th>日期</th><th>每日主題</th><th>每日任務／成果標準</th></tr></thead>
+<tbody>
+<tr><td>Day 1・12/08</td><td>發想與素材生成</td><td>確定主題，生成 5–10 張素材</td></tr>
+<tr><td>Day 2・12/09</td><td>把素材剪成故事</td><td>完成粗剪</td></tr>
+<tr><td>Day 3・12/10</td><td>字幕、配樂與節奏</td><td>完成 45–75 秒精剪</td></tr>
+<tr><td>Day 4・12/11</td><td>輸出與成果分享</td><td><b>（修改）</b>輸出直式 1080×1920 MP4，附一段 50 字創作說明</td></tr>
+</tbody></table></div>
+<sc-if value="{{contentPending}}" hint-placeholder-val="{{ true }}">
+<div class="note">林若涵 12/09 更新了 Day 4 任務，等你確認。</div>
+<sc-if value="{{returning}}" hint-placeholder-val="{{ false }}">
+<div class="field"><label for="why">退回原因（必填）</label><textarea id="why" placeholder="例如：50 字說明可以改成選填嗎？"></textarea></div>
+<div class="row" style="justify-content: flex-end"><button type="button" class="btn ghost" onClick="{{cancelReturn}}">取消</button><button type="button" class="btn" onClick="{{doReturn}}">送出退回</button></div>
+</sc-if>
+<sc-if value="{{notReturning}}" hint-placeholder-val="{{ true }}">
+<div class="row" style="justify-content: flex-end"><button type="button" class="btn ghost" onClick="{{askReturn}}">退回修改</button><button type="button" class="btn" onClick="{{confirm}}">確認並公開</button></div>
+</sc-if>
+</sc-if>
+<sc-if value="{{contentConfirmed}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status">已確認並公開，學員現在看得到 Day 4 的新任務</div></sc-if>
+<sc-if value="{{contentReturned}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status">已退回給林若涵，學員仍看到原本的 Day 4 任務</div></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{o4}}" hint-placeholder-val="{{ false }}">
+<dc-import name="H03_Ops" hint-size="100%,1100px"></dc-import>
+</sc-if>
+
+<sc-if value="{{o5}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h2>成果與結案</h2>
+<ol class="steps">
+<li><span class="n" aria-hidden="true">1</span>收齊最終作品（0／8，12/11 開放提交）</li>
+<li><span class="n" aria-hidden="true">2</span>整理成果展示頁，邀請林若涵留下回饋</li>
+<li><span class="n" aria-hidden="true">3</span>確認結案，活動移到「已結束」</li>
+</ol>
+<button type="button" class="btn" disabled style="align-self: flex-start">確認結案（活動結束後開放）</button>
+</section>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 1, c: 'pending', ret: false, dec: {}, open: '', rej: '', reason: '', reasons: {} }; }
+  renderVals() {
+    const { t, c, ret } = this.state;
+    const text = { pending: '修改待確認', confirmed: '已確認並公開', returned: '已退回' }[c];
+    const s = this.state;
+    const P = [
+      ['p1', '許若晴', '剪過 Vlog', '12/08', '想學 AI 生成素材，讓 Vlog 更有畫面', '作品連結（YouTube）', '可以補看 Day 1–2 回放，之後每天都能上線'],
+      ['p2', '黃冠霖', '沒剪過片', '12/08', '朋友推薦，想做出第一支短片', '沒有', '只有週末有空'],
+      ['p3', '鄭宇恩', '剪過社團活動影片', '12/09', '想把社團影片做得更有故事', '社團活動回顧影片', '每天 19:00 後都可以']
+    ];
+    const base = 8, seats = 12;
+    const yesN = P.filter((p) => s.dec[p[0]] === 'yes').length;
+    const noN = P.filter((p) => s.dec[p[0]] === 'no').length;
+    const pendN = P.length - yesN - noN;
+    const admitN = base + yesN;
+    const full = admitN >= seats;
+    const setDec = (id, v) => () => this.setState({ dec: { ...s.dec, [id]: v } });
+    const v = {
+      pend: P.map(([id, name, exp, when, why, link, time]) => { const d = s.dec[id]; return {
+        name, ini: name[0], exp, when, why, link, time, isPending: !d, decided: !!d, full,
+        open: s.open === id && !d, moreText: s.open === id ? '收起' : '看報名表', toggle: () => this.setState({ open: s.open === id ? '' : id }),
+        yes: setDec(id, 'yes'), no: () => this.setState({ rej: id, reason: '' }),
+        result: d === 'yes' ? '已錄取' : '未錄取', chipCls: d === 'yes' ? 'on' : '', bg: d ? '#fafaf8' : '#fff',
+        notice: d === 'yes' ? '已發送錄取通知、課前準備與 Day 1–2 回放連結' : '已發送不錄取通知，原因：' + (s.reasons[id] || '') }; }),
+      rejOpen: !!s.rej, rejName: (P.find((p) => p[0] === s.rej) || [, ''])[1], reason: s.reason, noReason: !s.reason.trim(),
+      onReason: (e) => this.setState({ reason: e.target.value }), cancelRej: () => this.setState({ rej: '', reason: '' }),
+      submitRej: () => { if (!s.reason.trim()) return; this.setState({ dec: { ...s.dec, [s.rej]: 'no' }, reasons: { ...s.reasons, [s.rej]: s.reason.trim() }, rej: '', reason: '' }); },
+      reasonChips: ['名額已滿，歡迎報名下一梯', '這次程度和你的經驗不太符合', '可參加時間無法配合每日課程', '活動已進行一半，建議下一梯從頭參加'].map((label) => ({ label, pick: () => this.setState({ reason: label }) })),
+      pendN, noPend: pendN === 0, hasPend: pendN > 0, pendBadge: pendN > 0 ? '（' + pendN + ' 待審核）' : '',
+      admitN, rejectN: 2 + noN, seatsLeft: seats - admitN,
+      admitAll: () => { const n = { ...s.dec }; let left = seats - admitN; P.forEach((p) => { if (!n[p[0]] && left > 0) { n[p[0]] = 'yes'; left--; } }); this.setState({ dec: n }); },
+      contentPending: c === 'pending', contentConfirmed: c === 'confirmed', contentReturned: c === 'returned',
+      contentText: text, contentChipCls: c === 'confirmed' ? 'on' : '',
+      contentBadge: c === 'pending' ? '（待確認）' : '',
+      returning: ret, notReturning: !ret,
+      askReturn: () => this.setState({ ret: true }), cancelReturn: () => this.setState({ ret: false }),
+      doReturn: () => this.setState({ c: 'returned', ret: false }),
+      confirm: () => this.setState({ c: 'confirmed' })
+    };
+    for (let i = 1; i <= 5; i++) {
+      v['c' + i] = t === i ? 'cur' : '';
+      v['o' + i] = t === i;
+      v['s' + i] = () => this.setState({ t: i });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

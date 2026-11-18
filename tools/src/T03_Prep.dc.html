@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>分享工作區｜課程準備</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+
+<div class="layout">
+<aside class="side" style="flex: 1 1 320px; max-width: 380px">
+<section class="card" style="gap: 8px">
+<div class="row between"><h2 style="margin: 0">教材庫</h2><span class="small muted">{{libCount}} 份</span></div>
+<div class="empty" style="padding: 16px"><b class="small">拖曳檔案到這裡上傳</b><span class="small muted">或貼上雲端連結</span></div>
+<div class="row" style="gap: 6px; flex-wrap: wrap"><sc-for list="{{kinds}}" as="k" hint-placeholder-count="4"><button type="button" class="chip {{k.cls}}" aria-pressed="{{k.on}}" onClick="{{k.pick}}" style="cursor: pointer; font: inherit; min-height: 36px">{{k.label}}</button></sc-for></div>
+<sc-for list="{{lib}}" as="f" hint-placeholder-count="6">
+<button type="button" onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="font: inherit; text-align: left; cursor: pointer; display: flex; gap: 10px; align-items: center; padding: 8px; border-radius: 8px; border: {{f.ring}}; background: #fff">
+<span class="ph" style="width: 56px; height: 40px; border-radius: 6px; flex: none">{{f.k}}</span>
+<span class="grow" style="display: flex; flex-direction: column"><b class="small">{{f.n}}</b><span class="small muted">{{f.used}}</span></span>
+</button>
+</sc-for>
+</section>
+</aside>
+
+<div class="main">
+<section class="card" style="padding: 14px 18px"><div class="row between"><div class="col" style="gap: 2px"><span class="small muted">選中的教材</span><b>{{sel.n}}</b></div><span class="small muted">點下面的「加到這天」分配過去，同一份可以用在好幾天</span></div></section>
+<div class="grid3" style="align-items: start">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="3">
+<section class="card" style="gap: 8px">
+<span class="small muted">{{d.date}}</span>
+<b>{{d.no}}　{{d.topic}}</b>
+<sc-for list="{{d.mats}}" as="m" hint-placeholder-count="2"><div class="row" style="gap: 8px; padding: 6px 8px; background: #f4f4f2; border-radius: 6px"><span class="small" style="font-weight: 600">{{m.k}}</span><span class="small grow">{{m.n}}</span></div></sc-for>
+<sc-if value="{{d.empty}}" hint-placeholder-val="{{ false }}"><p class="small muted">還沒有教材</p></sc-if>
+<button type="button" class="btn {{d.btnCls}}" style="min-height: 40px; height: auto; white-space: normal; line-height: 1.4; padding: 8px 12px" onClick="{{d.toggle}}" aria-label="{{d.aria}}">{{d.btn}}</button>
+<div class="col" style="gap: 2px; border-top: 1px solid #e4e4e0; padding-top: 8px"><span class="small muted">當天任務</span><span class="small">{{d.task}}</span><sc-if value="{{d.flag}}" hint-placeholder-val="{{ false }}"><span class="small note">被退回：請補交付格式</span></sc-if></div>
+</section>
+</sc-for>
+</div>
+<section class="card"><div class="row between"><span class="small muted">開課前：學習者課前準備會附上「{{preMat}}」</span><button type="button" class="btn ghost">編輯課前準備</button></div></section>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { sel: 'f5', k: 'all', use: { f1: [0], f2: [1], f3: [2], f4: [0], f5: [0, 1], f6: [] } }; }
+  renderVals() {
+    const s = this.state;
+    const F = [['f1', 'PDF', 'Day1_拍攝構圖.pdf'], ['f2', 'PDF', 'Day2_節奏與轉場.pdf'], ['f3', 'PDF', 'Day3_字幕配樂.pdf'], ['f4', '影片', '三種鏡頭示範.mp4'], ['f5', '素材', '練習用素材包（20 段）'], ['f6', '連結', '授權音樂清單']];
+    const D = [['Day 1', '12/14', '手機拍攝與素材整理', '拍 10 段生活片段並分類', false], ['Day 2', '12/15', '剪輯節奏與轉場', '把素材剪成 30 秒，至少兩種轉場', false], ['Day 3', '12/16', '字幕、配樂與輸出', '加字幕配樂，輸出直式 MP4', false]];
+    const sel = F.find((f) => f[0] === s.sel);
+    const KS = [['all', '全部'], ['PDF', '簡報'], ['影片', '影片'], ['素材', '素材'], ['連結', '連結']];
+    return {
+      libCount: F.length,
+      kinds: KS.map(([k, l]) => ({ label: l, on: s.k === k, cls: s.k === k ? 'on' : '', pick: () => this.setState({ k }) })),
+      lib: F.filter((f) => s.k === 'all' || f[1] === s.k).map(([id, k, n]) => ({ k, n, on: s.sel === id, ring: s.sel === id ? '2px solid #1f1f1f' : '1px solid #d6d6d2', used: s.use[id].length ? '用在 ' + s.use[id].map((i) => 'Day ' + (i + 1)).join('、') : '還沒分配', pick: () => this.setState({ sel: id }) })),
+      sel: { n: sel[2] },
+      days: D.map(([no, date, topic, task, flag], i) => {
+        const has = s.use[s.sel].includes(i);
+        return {
+          no, date, topic, task, flag,
+          mats: F.filter((f) => s.use[f[0]].includes(i)).map((f) => ({ k: f[1], n: f[2] })),
+          empty: !F.some((f) => s.use[f[0]].includes(i)),
+          btn: has ? '從這天移除' : '＋ 加到這天', btnCls: has ? 'ghost' : '', aria: (has ? '從' + no + '移除「' : '把「') + sel[2] + (has ? '」' : '」加到' + no),
+          toggle: () => { const cur = s.use[s.sel]; this.setState({ use: { ...s.use, [s.sel]: has ? cur.filter((x) => x !== i) : cur.concat(i).sort() } }); }
+        };
+      }),
+      preMat: '練習用素材包（20 段）'
+    };
+  }
+}
+</script>
+</body>
+</html>

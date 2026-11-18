@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動管理｜AI 影片新手交流週（招募中）</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a class="cur" href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="H01_HostList.dc.html">我主辦的</a> / 活動管理</p>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role host">主理人</span><h1>AI 影片新手交流週</h1><p class="muted">興趣社群・12/21（一）–12/25（五）・每晚 20:00–21:00・分享者 蔡明軒</p></div><div class="chips"><span class="chip on"><i>活動</i>未開始</span><span class="chip"><i>招募</i>招募中・12/17 截止</span></div></div>
+<div class="tabs" role="group" aria-label="活動管理"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">總覽</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">報名與錄取{{pendBadge}}</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">分享內容</button><button type="button" class="{{c4}}" aria-pressed="{{o4}}" onClick="{{s4}}">活動營運</button><button type="button" class="{{c5}}" aria-pressed="{{o5}}" onClick="{{s5}}">成果與結案</button></div>
+
+<sc-if value="{{o1}}" hint-placeholder-val="{{ false }}">
+<div class="grid3">
+<section class="card"><span class="small muted">已錄取</span><b style="font-size: 28px">{{admitN}}／12</b><div class="bar"><span style="width: {{admitPct}}"></span></div></section>
+<section class="card"><span class="small muted">待審核報名</span><b style="font-size: 28px">{{pendN}}</b></section>
+<section class="card"><span class="small muted">距離招募截止</span><b style="font-size: 28px">8 天</b><span class="small muted">12/17（四）23:59</span></section>
+</div>
+<section class="card">
+<h2>需要你處理</h2>
+<sc-if value="{{hasPend}}" hint-placeholder-val="{{ true }}"><button type="button" class="item" style="font: inherit; text-align: left; cursor: pointer; width: 100%" onClick="{{s2}}"><div class="grow"><b>{{pendN}} 位報名等你審核</b><span class="small muted">審核通過才算錄取，系統會通知對方結果</span></div><span class="small">前往 →</span></button></sc-if>
+<sc-if value="{{noPend}}" hint-placeholder-val="{{ false }}"><p class="small muted">目前沒有待審核的報名。</p></sc-if>
+<div class="item"><div class="grow"><b>分享內容準備中</b><span class="small muted">蔡明軒已接受邀請，預計 12/18 前提交課程規劃給你確認</span></div></div>
+</section>
+</sc-if>
+
+<sc-if value="{{o2}}" hint-placeholder-val="{{ true }}">
+<section class="card">
+<div class="row between"><div class="col" style="gap: 2px"><h2>待審核（{{pendN}}）</h2><span class="small muted">招募到 12/17 23:59，還有 {{seatsLeft}} 個名額。報名條件：沒剪過片也可以、可以每天上線</span></div><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{admitAll}}" disabled="{{noPend}}">全部錄取</button></div>
+<sc-for list="{{pend}}" as="p" hint-placeholder-count="3">
+<div class="card" style="padding: 14px; gap: 8px; background: {{p.bg}}">
+<div class="row between" style="flex-wrap: wrap; gap: 8px">
+<div class="row" style="gap: 10px"><span class="av" aria-hidden="true">{{p.ini}}</span><div class="col" style="gap: 0"><div class="row" style="gap: 6px"><b>{{p.name}}</b><sc-if value="{{p.isNew}}" hint-placeholder-val="{{ false }}"><span class="tag new">新報名</span></sc-if></div><span class="small muted">{{p.exp}}・報名於 {{p.when}}</span></div></div>
+<div class="row" style="gap: 8px; align-items: center">
+<sc-if value="{{p.isPending}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{p.toggle}}">{{p.moreText}}</button><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{p.no}}">不錄取</button><button type="button" class="btn" style="min-height: 40px" onClick="{{p.yes}}" disabled="{{p.full}}">錄取</button></sc-if>
+<sc-if value="{{p.decided}}" hint-placeholder-val="{{ false }}"><span class="chip {{p.chipCls}}"><i>報名</i>{{p.result}}</span></sc-if>
+</div>
+</div>
+<sc-if value="{{p.open}}" hint-placeholder-val="{{ false }}"><dl class="kv small"><dt>想參加的原因</dt><dd>{{p.why}}</dd><dt>剪輯經驗</dt><dd>{{p.exp}}</dd><dt>可參加時間</dt><dd>{{p.time}}</dd></dl></sc-if>
+<sc-if value="{{p.decided}}" hint-placeholder-val="{{ false }}"><span class="small muted">{{p.notice}}</span></sc-if>
+</div>
+</sc-for>
+<sc-if value="{{noPend}}" hint-placeholder-val="{{ false }}"><p class="small muted">報名都審核完了。</p></sc-if>
+</section>
+<sc-if value="{{rejOpen}}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="true" aria-labelledby="rjt" style="position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px">
+<div class="card" style="max-width: 540px; width: 100%; gap: 14px; box-shadow: 0 12px 32px rgba(0,0,0,0.2)">
+<div class="col" style="gap: 2px"><h2 id="rjt">不錄取 {{rejName}}</h2><p class="small muted">原因會附在通知裡寄給對方，請寫得具體、友善。</p></div>
+<div class="row" style="gap: 6px; flex-wrap: wrap" role="group" aria-label="常用原因">
+<sc-for list="{{reasonChips}}" as="r" hint-placeholder-count="3"><button type="button" class="fbtn" onClick="{{r.pick}}">{{r.label}}</button></sc-for>
+</div>
+<div class="field"><label for="rr">不錄取原因（必填）</label><textarea id="rr" value="{{reason}}" onChange="{{onReason}}" placeholder="例如：這次以新手為主，推薦你報名進階的「AI 剪輯技巧交流週」。" style="min-height: 110px"></textarea></div>
+<div class="row" style="justify-content: flex-end; gap: 8px"><button type="button" class="btn ghost" onClick="{{cancelRej}}">取消</button><button type="button" class="btn" onClick="{{submitRej}}" disabled="{{noReason}}">送出不錄取</button></div>
+</div>
+</div>
+</sc-if>
+<section class="card">
+<div class="row between"><h2>已審核</h2><span class="small muted">錄取 {{admitN}}・未錄取 {{rejectN}}</span></div>
+<div class="tablebox"><table>
+<thead><tr><th>姓名</th><th>經驗</th><th>想參加的原因</th><th>報名狀態</th><th>通知</th></tr></thead>
+<tbody>
+<tr><td>王詩涵</td><td>沒剪過片</td><td>想替自己的小店做介紹影片</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知</td></tr>
+<tr><td>劉品妤</td><td>沒剪過片</td><td>想試試 AI 做影片</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知</td></tr>
+<tr><td>吳承恩</td><td>剪過手機短片</td><td>想學 AI 生成素材</td><td><span class="chip on"><i>報名</i>已錄取</span></td><td class="small muted">已發送錄取通知</td></tr>
+</tbody></table></div>
+<p class="small muted">只列出部分名單。課前準備會在分享內容確認後，一起發給已錄取的學員。</p>
+</section>
+</sc-if>
+
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="row between"><div><h2>分享內容</h2><p class="small muted">由蔡明軒規劃。提交後你可以確認並公開，或退回附原因。</p></div><span class="chip"><i>分享內容</i>準備中</span></div>
+<div class="empty"><p>蔡明軒還沒提交課程規劃</p><p class="small">預計 12/18 前提交，提交後會通知你</p></div>
+</section>
+</sc-if>
+
+<sc-if value="{{o4}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>活動營運</h2><div class="empty"><p>活動 12/21 開始後開放</p><p class="small">每天的待辦（回覆問題、關心缺席、提醒提交）會出現在這裡</p></div></section>
+</sc-if>
+
+<sc-if value="{{o5}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>成果與結案</h2><div class="empty"><p>活動結束後開放</p></div></section>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 2, dec: {}, open: '', rej: '', reason: '', reasons: {} }; }
+  renderVals() {
+    const s = this.state;
+    const P = [
+      ['p1', '林芷安', '沒剪過片', '12/09', true, '想幫社團做活動回顧影片，聽說 AI 可以幫忙生成素材', '每天 20:00 後都可以'],
+      ['p2', '高翊誠', '有 3 年剪輯接案經驗', '12/09', true, '想看看別人怎麼用 AI，順便交流', '只能參加前三天'],
+      ['p3', '蘇郁婷', '剪過手機短片', '12/08', false, '想學把照片變成有故事的短片', '每天都可以，週三可能晚 15 分鐘']
+    ];
+    const base = 3, seats = 12;
+    const yesN = P.filter((p) => s.dec[p[0]] === 'yes').length;
+    const noN = P.filter((p) => s.dec[p[0]] === 'no').length;
+    const pendN = P.length - yesN - noN;
+    const admitN = base + yesN;
+    const full = admitN >= seats;
+    const v = {
+      pend: P.map(([id, name, exp, when, isNew, why, time]) => { const d = s.dec[id]; return {
+        name, ini: name[0], exp, when, why, time, isNew: isNew && !d, isPending: !d, decided: !!d, full,
+        open: s.open === id && !d, moreText: s.open === id ? '收起' : '看報名表', toggle: () => this.setState({ open: s.open === id ? '' : id }),
+        yes: () => this.setState({ dec: { ...s.dec, [id]: 'yes' } }), no: () => this.setState({ rej: id, reason: '' }),
+        result: d === 'yes' ? '已錄取' : '未錄取', chipCls: d === 'yes' ? 'on' : '', bg: d ? '#fafaf8' : '#fff',
+        notice: d === 'yes' ? '已發送錄取通知，課前準備會在分享內容確認後寄出' : '已發送不錄取通知，原因：' + (s.reasons[id] || '') }; }),
+      rejOpen: !!s.rej, rejName: (P.find((p) => p[0] === s.rej) || [, ''])[1], reason: s.reason, noReason: !s.reason.trim(),
+      onReason: (e) => this.setState({ reason: e.target.value }), cancelRej: () => this.setState({ rej: '', reason: '' }),
+      submitRej: () => { if (!s.reason.trim()) return; this.setState({ dec: { ...s.dec, [s.rej]: 'no' }, reasons: { ...s.reasons, [s.rej]: s.reason.trim() }, rej: '', reason: '' }); },
+      reasonChips: ['這次以新手為主，程度不太符合', '可參加時間無法配合每日課程', '名額已滿，歡迎報名下一梯'].map((label) => ({ label, pick: () => this.setState({ reason: label }) })),
+      pendN, noPend: pendN === 0, hasPend: pendN > 0, pendBadge: pendN > 0 ? '（' + pendN + ' 待審核）' : '',
+      admitN, admitPct: Math.round((admitN / seats) * 100) + '%', rejectN: noN, seatsLeft: seats - admitN,
+      admitAll: () => { const n = { ...s.dec }; let left = seats - admitN; P.forEach((p) => { if (!n[p[0]] && left > 0) { n[p[0]] = 'yes'; left--; } }); this.setState({ dec: n }); }
+    };
+    for (let i = 1; i <= 5; i++) {
+      v['c' + i] = s.t === i ? 'cur' : '';
+      v['o' + i] = s.t === i;
+      v['s' + i] = () => this.setState({ t: i });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

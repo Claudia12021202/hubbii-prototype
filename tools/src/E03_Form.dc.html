@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>報名｜初階 AI 影片交流</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a class="cur" href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap" style="max-width: 800px">
+<p class="crumb"><a href="E01_Explore.dc.html">探索活動</a> / <a href="E02_Detail.dc.html">初階 AI 影片交流</a> / 報名</p>
+<div class="col" style="gap: 4px"><h1>報名「初階 AI 影片交流」</h1><p class="muted">12/14（一）–12/17（四）・每晚 20:00–21:00・線上</p></div>
+<form class="card" action="#">
+<div class="grid2">
+<div class="field"><label for="nm">姓名</label><input id="nm" value="陳立安"></div>
+<div class="field"><label for="em">Email</label><input id="em" type="email" value="lian@example.com"></div>
+</div>
+<fieldset class="fs"><legend>你的剪輯經驗</legend>
+<label class="radio"><input type="radio" name="exp">完全沒剪過</label>
+<label class="radio"><input type="radio" name="exp">用手機剪過一點</label>
+<label class="radio"><input type="radio" name="exp">用過剪輯軟體</label>
+</fieldset>
+<div class="field"><label for="why">想用 AI 做出什麼樣的影片？</label><textarea id="why" placeholder="例如：想把旅行照片做成一支有音樂的短片"></textarea></div>
+<fieldset class="fs"><legend>可以參加的時間</legend>
+<label class="radio"><input type="radio" name="time">四天都能線上參加</label>
+<label class="radio"><input type="radio" name="time">部分時段，其他時間看回放</label>
+</fieldset>
+<p class="small muted">送出後由主理人審核，結果會用通知告訴你。</p>
+<div class="row" style="justify-content: flex-end"><a class="btn ghost" href="E02_Detail.dc.html">取消</a><a class="btn" href="E04_Status.dc.html">送出報名</a></div>
+</form>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

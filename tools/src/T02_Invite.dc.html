@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>分享邀請｜AI 剪輯技巧交流週</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a class="cur" href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="T01_SharerList.dc.html">我分享的</a> / 分享邀請</p>
+<sc-if value="{{isAccepted}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status">已接受邀請，已通知許文哲</div></sc-if>
+<sc-if value="{{isDeclined}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status">已婉拒，已通知許文哲</div></sc-if>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role shr">分享者</span><h1>許文哲邀請你到「AI 剪輯技巧交流週」分享</h1></div><span class="chip {{chipCls}}"><i>分享邀請</i>{{statusText}}</span></div>
+<div class="layout">
+<div class="main">
+<section class="card">
+<h2>邀請你分享什麼</h2>
+<dl class="kv"><dt>你的場次</dt><dd><b>12/19（六）20:00–20:40</b>，線上</dd><dt>分享主題</dt><dd>你的 AI 短片剪輯流程：從素材到成片</dd><dt>形式</dt><dd>30 分鐘分享＋10 分鐘問答</dd><dt>對象</dt><dd>剛開始用 AI 做影片的入門學習者</dd></dl>
+<div class="note"><b class="small">許文哲的留言</b><p>看過你的短片，想請你聊聊挑素材和抓節奏的方法。時間或主題想調整都可以再討論。</p></div>
+</section>
+<section class="card">
+<h2>接受後你會做的事</h2>
+<ul style="margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px"><li>在分享工作區規劃你的場次：主題、大綱、教材、學習者課前準備</li><li>提交給許文哲確認，確認後才會公開給已錄取的學習者</li><li>活動期間回覆學習者問題、看他們的作品</li></ul>
+<p class="small muted">你只負責自己場次的內容。報名審核和活動資料由主理人管理，接受邀請不會取得管理權。</p>
+</section>
+</div>
+<aside class="side">
+<section class="card">
+<h3>關於這個活動</h3>
+<dl class="kv"><dt>類型</dt><dd>技能分享社群</dd><dt>日期</dt><dd>12/19–12/21</dd><dt>程度</dt><dd>基礎</dd><dt>主理人</dt><dd>許文哲</dd></dl>
+</section>
+<sc-if value="{{isPending}}" hint-placeholder-val="{{ true }}">
+<section class="card">
+<h3>回覆邀請</h3>
+<p class="small muted">請在 12/13（日）23:59 前回覆</p>
+<button type="button" class="btn" onClick="{{accept}}">接受邀請</button>
+<button type="button" class="btn ghost" onClick="{{askDecline}}">婉拒</button>
+</section>
+</sc-if>
+<sc-if value="{{isConfirm}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h3>確定婉拒嗎？</h3>
+<div class="field"><label for="msg">想跟許文哲說的話（選填）</label><textarea id="msg" placeholder="例如：那天剛好有事，下次再合作"></textarea></div>
+<button type="button" class="btn" onClick="{{decline}}">確認婉拒</button>
+<button type="button" class="btn ghost" onClick="{{back}}">取消</button>
+</section>
+</sc-if>
+<sc-if value="{{isAccepted}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h3>接下來</h3>
+<p class="small muted">這個活動已移到「我分享的 › 準備中」。12/16 前在分享工作區填好你的場次內容，提交給許文哲確認。</p>
+<a class="btn" href="T03_Workspace.dc.html">前往分享工作區開始規劃</a>
+<a class="btn ghost" href="T01_SharerList.dc.html">回到我分享的活動</a>
+</section>
+</sc-if>
+<sc-if value="{{isDeclined}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<p class="small muted">這筆邀請已結束，不會出現在你的分享活動中。</p>
+<a class="btn ghost" href="T01_SharerList.dc.html">回到我分享的活動</a>
+</section>
+</sc-if>
+</aside>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { st: 'pending' }; }
+  renderVals() {
+    const st = this.state.st;
+    const text = { pending: '待回覆', confirm: '待回覆', accepted: '已接受', declined: '已婉拒' }[st];
+    return {
+      isPending: st === 'pending', isConfirm: st === 'confirm', isAccepted: st === 'accepted', isDeclined: st === 'declined',
+      statusText: text, chipCls: st === 'accepted' ? 'on' : '',
+      accept: () => this.setState({ st: 'accepted' }),
+      askDecline: () => this.setState({ st: 'confirm' }),
+      decline: () => this.setState({ st: 'declined' }),
+      back: () => this.setState({ st: 'pending' })
+    };
+  }
+}
+</script>
+</body>
+</html>

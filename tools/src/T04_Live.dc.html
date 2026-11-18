@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>分享工作區｜AI 旁白配音入門（進行中）</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}.inp{font:inherit;width:100%;min-height:40px;padding:6px 8px;border:1px solid #a9a9a5;border-radius:6px;box-sizing:border-box}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a class="cur" href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="T01_SharerList.dc.html">我分享的</a> / 分享工作區</p>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role shr">分享者</span><h1>AI 旁白配音入門｜分享工作區</h1><p class="muted">興趣社群・12/07–12/10・每晚 20:30–21:30・主理人 周亦辰・學員 6 人</p></div><div class="chips"><span class="chip on"><i>活動</i>進行中・Day 3</span><span class="chip on"><i>分享內容</i>已確認並公開</span></div></div>
+<div class="tabs" role="group" aria-label="分享工作區">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="6"><button type="button" class="{{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button></sc-for>
+</div>
+
+<sc-if value="{{o1}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="row between"><h2>課程規劃</h2><span class="chip on">周亦辰已確認・12/04</span></div>
+<div class="tablebox"><table><thead><tr><th>日期</th><th>每日主題</th><th>成果標準</th></tr></thead><tbody>
+<tr><td>Day 1・12/07</td><td>AI 配音工具與聲音選擇</td><td>產出 15 秒旁白</td></tr>
+<tr><td>Day 2・12/08</td><td>寫出好念的旁白稿</td><td>寫好 30 秒旁白稿</td></tr>
+<tr><td><b>Day 3・12/09（今天）</b></td><td><b>語氣、停頓與節奏</b></td><td>完成 30 秒配音</td></tr>
+<tr><td>Day 4・12/10</td><td>配到影片並輸出</td><td>輸出含旁白的短片</td></tr>
+</tbody></table></div>
+<p class="small muted">活動進行中，要修改需重新送主理人確認。</p>
+</section>
+</sc-if>
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>課程準備</h2><div class="kv"><span class="small muted">教材</span><span>4 份簡報、3 支示範音檔、旁白稿範本</span><span class="small muted">每日任務</span><span>4 天都已公開</span><span class="small muted">課前準備</span><span>6／6 位學員已完成</span></div></section>
+</sc-if>
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>同步教學</h2><div class="kv"><span class="small muted">今晚</span><span>Day 3・20:30–21:30</span><span class="small muted">上課連結</span><span>Google Meet 連結（已提供）</span><span class="small muted">回放</span><span>Day 1、Day 2 已上傳；Day 3 課後補上</span></div><button type="button" class="btn" style="align-self: flex-start">進入今晚的課</button></section>
+</sc-if>
+
+<sc-if value="{{o4}}" hint-placeholder-val="{{ true }}">
+<div class="grid4">
+<section class="card"><span class="small muted">Day 3 已提交</span><b style="font-size: 26px">{{d3n}}／6</b></section>
+<section class="card"><span class="small muted">平均出席</span><b style="font-size: 26px">83%</b></section>
+<section class="card"><span class="small muted">需要關心</span><b style="font-size: 26px">{{careN}} 人</b></section>
+<section class="card"><span class="small muted">待審閱作品</span><b style="font-size: 26px">{{toReview}} 件</b></section>
+</div>
+<section class="card">
+<div class="row between"><h2>學員進度</h2><div class="fgroup"><button type="button" class="fbtn {{fAllCls}}" onClick="{{fAll}}">全部</button><button type="button" class="fbtn {{fCareCls}}" onClick="{{fCare}}">需要關心</button></div></div>
+<div class="tablebox"><table>
+<thead><tr><th>學員</th><th>Day 1</th><th>Day 2</th><th>Day 3（今天）</th><th>出席</th><th></th></tr></thead>
+<tbody>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="6"><tr><td><b>{{r.name}}</b></td><td><span class="chip {{r.c1}}">{{r.d1}}</span></td><td><span class="chip {{r.c2}}">{{r.d2}}</span></td><td><span class="chip {{r.c3}}">{{r.d3}}</span></td><td class="small">{{r.att}}</td><td><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px" onClick="{{r.act}}" disabled="{{r.noAct}}">{{r.btn}}</button></td></tr></sc-for>
+</tbody></table></div>
+<p class="small muted">主理人周亦辰也看得到這張表。</p>
+</section>
+</sc-if>
+
+<sc-if value="{{o5}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<div class="row between"><h2>問題與回饋</h2><span class="small muted">{{openQ}} 則待回覆</span></div>
+<sc-for list="{{qs}}" as="q" hint-placeholder-count="4">
+<button type="button" class="item" onClick="{{q.pick}}" style="font: inherit; text-align: left; cursor: pointer; width: 100%; border: {{q.ring}}"><div class="grow"><div class="row" style="gap: 8px"><span class="tag">{{q.day}}</span><span class="chip {{q.cls}}">{{q.st}}</span></div><b>{{q.title}}</b><span class="small muted">{{q.who}}・{{q.when}}</span></div></button>
+</sc-for>
+</div>
+<aside class="side">
+<section class="card">
+<span class="small muted">{{cq.day}}・{{cq.who}}</span>
+<h3>{{cq.title}}</h3>
+<p class="small">{{cq.body}}</p>
+<sc-if value="{{cq.hasReply}}" hint-placeholder-val="{{ false }}"><div class="note small"><b>你的回覆：</b>{{cq.reply}}</div></sc-if>
+<sc-if value="{{cq.open}}" hint-placeholder-val="{{ true }}">
+<div class="field"><label for="rp">回覆</label><textarea id="rp" value="{{draft}}" onChange="{{onDraft}}" placeholder="寫下你的建議…"></textarea></div>
+<div class="row" style="gap: 8px"><button type="button" class="btn" onClick="{{sendReply}}" disabled="{{noDraft}}">送出回覆</button><button type="button" class="btn ghost">附上示範音檔</button></div>
+</sc-if>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{o6}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<div class="row between"><h2>作品審閱</h2><div class="fgroup"><sc-for list="{{wf}}" as="f" hint-placeholder-count="3"><button type="button" class="fbtn {{f.cls}}" onClick="{{f.pick}}">{{f.label}}</button></sc-for></div></div>
+<div class="grid3">
+<sc-for list="{{works}}" as="w" hint-placeholder-count="6"><button type="button" class="acard" onClick="{{w.pick}}" style="font: inherit; text-align: left; cursor: pointer; padding: 0; border-color: {{w.ring}}; border-width: {{w.ringW}}"><div class="ph">{{w.kind}}</div><div class="bd"><span class="chip {{w.cls}}" style="align-self: flex-start">{{w.st}}</span><b class="small">{{w.title}}</b><span class="small muted">{{w.who}}・{{w.day}}</span></div></button></sc-for>
+</div>
+</div>
+<aside class="side">
+<section class="card">
+<div class="ph" style="height: 120px">{{cw.kind}}播放</div>
+<h3>{{cw.title}}</h3>
+<span class="small muted">{{cw.who}}・{{cw.day}}・{{cw.note}}</span>
+<sc-if value="{{cw.done}}" hint-placeholder-val="{{ false }}"><div class="note small"><span class="tag">優點</span> {{cw.good}}<br><span class="tag">建議</span> {{cw.tip}}</div></sc-if>
+<sc-if value="{{cw.todo}}" hint-placeholder-val="{{ true }}">
+<div class="field"><label for="g1">優點</label><input class="inp" id="g1" value="{{good}}" onChange="{{onGood}}" placeholder="哪裡做得好？"></div>
+<div class="field"><label for="g2">建議</label><input class="inp" id="g2" value="{{tip}}" onChange="{{onTip}}" placeholder="下一步可以怎麼改？"></div>
+<button type="button" class="btn" onClick="{{sendFb}}" disabled="{{noFb}}">送出回饋</button>
+</sc-if>
+</section>
+</aside>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 4, care: false, nudged: {}, q: 'q1', replies: {}, draft: '', w: 'w1', fb: {}, good: '', tip: '', wd: 'all' }; }
+  renderVals() {
+    const s = this.state;
+    const L = [
+      ['蔡依婷', '已提交', '已提交', '已提交', '3／3', false],
+      ['劉家豪', '已提交', '已提交', '卡關中', '3／3', true],
+      ['張雅筑', '已提交', '補交', '未提交', '2／3・看回放', true],
+      ['林子翔', '已提交', '已提交', '進行中', '3／3', false],
+      ['洪佳琪', '已提交', '已提交', '已提交', '3／3', false],
+      ['方柏宇', '未提交', '未提交', '未提交', '1／3', true]
+    ];
+    const cls = (x) => (x === '已提交' || x === '補交' ? 'on' : '');
+    const Q = [
+      ['q1', 'Day 3', '劉家豪', '1 小時前', 'AI 配音停頓的地方都很怪，怎麼調？', '我在句子中間加了逗號，但 AI 停頓還是很短，聽起來很趕。'],
+      ['q2', 'Day 3', '林子翔', '3 小時前', '男聲聽起來太機械，有推薦的聲音嗎？', '試了 3 種男聲都很像廣播，有沒有比較自然的選法？'],
+      ['q3', 'Day 2', '張雅筑', '昨天', '旁白稿要寫到多少字才剛好 30 秒？', '我寫了 200 字，念起來超過 40 秒。'],
+      ['q4', 'Day 1', '洪佳琪', '12/07', '免費工具可以商用嗎？', '想把作品放到自己的 IG。']
+    ];
+    const preReplied = { q3: '中文旁白大約每秒 4 字，30 秒抓 110–130 字，留一點停頓空間。', q4: '要看各工具的授權條款，課程簡報第 6 頁有整理。' };
+    const replies = { ...preReplied, ...s.replies };
+    const W = [
+      ['w1', '早餐店的早晨（旁白版）', '蔡依婷', 'Day 3', '音檔', '30 秒'],
+      ['w2', '貓咪日記', '洪佳琪', 'Day 3', '音檔', '28 秒'],
+      ['w3', '我的通勤路', '林子翔', 'Day 2', '旁白稿', '125 字'],
+      ['w4', '週末市集', '劉家豪', 'Day 2', '旁白稿', '140 字'],
+      ['w5', '雨天書店', '蔡依婷', 'Day 2', '旁白稿', '118 字'],
+      ['w6', '夜跑紀錄', '張雅筑', 'Day 1', '音檔', '15 秒']
+    ];
+    const preFb = { w5: ['開頭一句就抓住畫面', '最後一句可以再短一點'], w6: ['聲音選得很溫暖', '試試把語速調慢 10%'] };
+    const fb = { ...preFb, ...s.fb };
+    const wl = W.filter((w) => s.wd === 'all' || (s.wd === 'todo' ? !fb[w[0]] : !!fb[w[0]]));
+    const cw = W.find((w) => w[0] === s.w);
+    const cq = Q.find((q) => q[0] === s.q);
+    const v = {
+      tabs: ['課程規劃', '課程準備', '同步教學', '學員進度', '問題與回饋', '作品審閱'].map((l, i) => {
+        const badge = i === 4 ? '（' + Q.filter((q) => !replies[q[0]]).length + '）' : i === 5 ? '（' + W.filter((w) => !fb[w[0]]).length + '）' : '';
+        return { label: l + badge, on: s.t === i + 1, cls: s.t === i + 1 ? 'cur' : '', pick: () => this.setState({ t: i + 1 }) };
+      }),
+      d3n: L.filter((x) => x[3] === '已提交').length, careN: L.filter((x) => x[5]).length, toReview: W.filter((w) => !fb[w[0]]).length,
+      fAllCls: s.care ? '' : 'cur', fCareCls: s.care ? 'cur' : '', fAll: () => this.setState({ care: false }), fCare: () => this.setState({ care: true }),
+      rows: L.filter((x) => !s.care || x[5]).map(([name, d1, d2, d3, att, care]) => ({
+        name, d1, d2, d3, att, c1: cls(d1), c2: cls(d2), c3: cls(d3),
+        btn: s.nudged[name] ? '已送出' : d3 === '卡關中' ? '主動關心' : d3 === '已提交' ? '看作品' : '提醒提交',
+        noAct: !!s.nudged[name], act: () => (d3 === '已提交' ? this.setState({ t: 6 }) : this.setState({ nudged: { ...s.nudged, [name]: true } }))
+      })),
+      openQ: Q.filter((q) => !replies[q[0]]).length,
+      qs: Q.map(([id, day, who, when, title]) => { const r = !!replies[id]; return { day, who, when, title, st: r ? '已回覆' : '待回覆', cls: r ? 'on' : '', ring: s.q === id ? '2px solid #1f1f1f' : '1px solid #d6d6d2', pick: () => this.setState({ q: id, draft: '' }) }; }),
+      cq: { day: cq[1], who: cq[2], title: cq[4], body: cq[5], hasReply: !!replies[cq[0]], reply: replies[cq[0]] || '', open: !replies[cq[0]] },
+      draft: s.draft, onDraft: (e) => this.setState({ draft: e.target.value }), noDraft: !s.draft.trim(),
+      sendReply: () => this.setState({ replies: { ...s.replies, [s.q]: s.draft.trim() }, draft: '' }),
+      wf: [['all', '全部'], ['todo', '待審閱'], ['done', '已回饋']].map(([k, l]) => ({ label: l, cls: s.wd === k ? 'cur' : '', pick: () => this.setState({ wd: k }) })),
+      works: wl.map(([id, title, who, day, kind]) => { const d = !!fb[id]; return { title, who, day, kind, st: d ? '已回饋' : '待審閱', cls: d ? 'on' : '', ring: s.w === id ? '#1f1f1f' : '#d6d6d2', ringW: s.w === id ? '2px' : '1px', pick: () => this.setState({ w: id, good: '', tip: '' }) }; }),
+      cw: { title: cw[1], who: cw[2], day: cw[3], kind: cw[4], note: cw[5], done: !!fb[cw[0]], todo: !fb[cw[0]], good: (fb[cw[0]] || [])[0], tip: (fb[cw[0]] || [])[1] },
+      good: s.good, tip: s.tip, onGood: (e) => this.setState({ good: e.target.value }), onTip: (e) => this.setState({ tip: e.target.value }),
+      noFb: !(s.good.trim() || s.tip.trim()),
+      sendFb: () => this.setState({ fb: { ...s.fb, [s.w]: [s.good.trim() || '—', s.tip.trim() || '—'] }, good: '', tip: '' })
+    };
+    for (let i = 1; i <= 6; i++) v['o' + i] = s.t === i;
+    return v;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動空間｜AI 字幕與配樂入門週</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a class="cur" href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="S01_LearnerList.dc.html">我參加的</a> / 活動空間</p>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role lrn">學習者</span><h1>AI 字幕與配樂入門週</h1><p class="muted">12/07–12/10・每晚 20:00–21:00・主理人 何承恩・分享者 吳佩真</p></div><div class="chips"><span class="chip on"><i>活動</i>進行中・Day 3</span></div></div>
+<div class="tabs" role="group" aria-label="活動空間"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">活動總覽</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">課程與任務</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">問題與交流</button><button type="button" class="{{c4}}" aria-pressed="{{o4}}" onClick="{{s4}}">活動成果</button></div>
+
+<sc-if value="{{o1}}" hint-placeholder-val="{{ true }}">
+<div class="layout">
+<div class="main">
+<sc-if value="{{showOnb}}" hint-placeholder-val="{{ true }}">
+<section class="card" aria-labelledby="onb">
+<div class="row between"><h2 id="onb">第一次來？三步驟認識活動空間</h2><span class="small muted">只在第一次進入時顯示</span></div>
+<ol class="steps"><li><span class="n" aria-hidden="true">1</span>每天到「課程與任務」上課、交當天任務</li><li><span class="n" aria-hidden="true">2</span>卡住了就到「問題與交流」發問，分享者會回覆</li><li><span class="n" aria-hidden="true">3</span>最後一天到「活動成果」提交作品</li></ol>
+<button type="button" class="btn ghost" style="align-self: flex-start" onClick="{{hideOnb}}">我知道了</button>
+</section>
+</sc-if>
+<section class="card">
+<h2>今天要做的事</h2>
+<div class="item"><div class="grow"><b>Day 3：配樂與節奏</b><span class="small muted">20:00 線上課・任務今晚 23:59 前提交</span></div><button type="button" class="btn" onClick="{{s2}}">前往課程與任務</button></div>
+</section>
+<section class="card">
+<h2>公告與活動動態</h2>
+<div class="col">
+<div class="item read"><div class="grow"><span class="role host">主理人</span><b>今晚課程會晚 10 分鐘開始</b><span class="small muted">何承恩・2 小時前</span></div></div>
+<div class="item read"><div class="grow"><span class="role shr">分享者</span><b>Day 2 大家的字幕作品很棒，整理了 3 個常見問題</b><span class="small muted">吳佩真・昨天</span></div></div>
+</div>
+</section>
+</div>
+<aside class="side">
+<section class="card">
+<div class="row between"><h3>活動前準備</h3><span class="small muted">3／3 完成</span></div>
+<label class="check"><input type="checkbox" checked>安裝剪輯工具</label>
+<label class="check"><input type="checkbox" checked>準備一支 30 秒以內的影片</label>
+<label class="check"><input type="checkbox" checked>加入活動群組</label>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}">
+<dc-import name="S02_Tasks" hint-size="100%,1100px"></dc-import>
+</sc-if>
+
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<dc-import name="S02_QA" hint-size="100%,1400px"></dc-import>
+</sc-if>
+
+<sc-if value="{{o4}}" hint-placeholder-val="{{ false }}">
+<div class="grid2">
+<form class="card" action="#">
+<div class="col" style="gap: 2px"><h2>提交最終作品</h2><p class="small muted">12/10（四）Day 4 開放，12/11 23:59 截止</p></div>
+<div class="field"><label for="fn">作品名稱</label><input id="fn" placeholder="例如：貓咪的一天（完整版）"></div>
+<div class="field"><label for="fl">作品連結</label><input id="fl" placeholder="貼上影片連結"></div>
+<div class="field"><label for="fd">創作說明</label><textarea id="fd" placeholder="想表達什麼、用了哪些技巧"></textarea></div>
+<button type="button" class="btn" disabled>提交作品（12/10 開放）</button>
+</form>
+<section class="card">
+<h2>成果展示與回饋</h2>
+<div class="empty"><p>活動結束後，大家的作品和分享者的回饋會出現在這裡</p></div>
+<p class="small muted">完成的作品會自動加到會員中心的「我的作品」。</p>
+</section>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1800}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 1, onb: true }; }
+  renderVals() {
+    const t = this.state.t;
+    const v = { showOnb: this.state.onb, hideOnb: () => this.setState({ onb: false }) };
+    for (let i = 1; i <= 4; i++) {
+      v['c' + i] = t === i ? 'cur' : '';
+      v['o' + i] = t === i;
+      v['s' + i] = () => this.setState({ t: i });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>通知下拉選單</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="bell" style="font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+<button type="button" class="icon" aria-label="通知，3 則未讀" aria-expanded="{{open}}" onClick="{{toggle}}"><span class="dot">3</span></button>
+<sc-if value="{{open}}" hint-placeholder-val="{{ false }}">
+<div class="dd" role="region" aria-label="通知">
+<div class="row between" style="padding: 6px 12px"><b>通知</b><a class="small" href="N01_Notices.dc.html">查看全部</a></div>
+<a class="ni" href="T02_Invite.dc.html"><span class="role shr">分享者</span><b>許文哲邀請你到「AI 剪輯技巧交流週」分享</b><span class="small muted">請在 12/13 前回覆・1 小時前</span></a>
+<a class="ni" href="H03_Manage.dc.html"><span class="role host">主理人</span><b>從素材到短片：2 位學員在 Day 2 任務提問</b><span class="small muted">等你或分享者回覆・3 小時前</span></a>
+<a class="ni" href="S02_Space.dc.html"><span class="role lrn">學習者</span><b>AI 字幕與配樂入門週：Day 3 任務已公開</b><span class="small muted">今晚 20:00 上課・今天</span></a>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":480,"height":520}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { open: false }; }
+  renderVals() {
+    return { open: this.state.open, toggle: () => this.setState({ open: !this.state.open }) };
+  }
+}
+</script>
+</body>
+</html>

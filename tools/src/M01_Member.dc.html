@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>會員中心</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<section class="card">
+<div class="row"><span class="av" aria-hidden="true" style="width: 64px; height: 64px; font-size: 22px">{{avText}}</span><div class="col" style="gap: 2px; flex: 1"><h1>陳立安</h1><p class="muted">喜歡用 AI 做短影片，週末會拍城市小日常。</p></div><a class="btn ghost" href="#">預覽公開頁</a></div>
+<div class="grid4">
+<div class="col" style="gap: 0"><b style="font-size: 22px">32</b><span class="small muted">追蹤者</span></div>
+<div class="col" style="gap: 0"><b style="font-size: 22px">2</b><span class="small muted">主辦活動</span></div>
+<div class="col" style="gap: 0"><b style="font-size: 22px">1</b><span class="small muted">分享場次</span></div>
+<div class="col" style="gap: 0"><b style="font-size: 22px">3</b><span class="small muted">參加活動</span></div>
+</div>
+</section>
+<div class="tabs" role="group" aria-label="會員中心"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">個人檔案</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">帳號設定</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">收藏的活動</button><button type="button" class="{{c4}}" aria-pressed="{{o4}}" onClick="{{s4}}">追蹤中的主理人</button><button type="button" class="{{c5}}" aria-pressed="{{o5}}" onClick="{{s5}}">我的作品</button><button type="button" class="{{c6}}" aria-pressed="{{o6}}" onClick="{{s6}}">好友列表</button></div>
+<sc-if value="{{o1}}" hint-placeholder-val="{{ true }}">
+<form class="card" action="#">
+<div class="col" style="gap: 2px"><h2>自我介紹</h2><p class="small muted">照著模板填，主理人審核報名和其他學員都會看到。</p></div>
+<div class="row" style="gap: 20px; align-items: center"><span class="av" aria-hidden="true" style="width: 96px; height: 96px; font-size: 34px; flex: none">{{avText}}</span><div class="col" style="gap: 8px"><b>頭貼</b><span class="small muted">{{avHint}}</span><div class="row" style="gap: 8px"><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{upAv}}">上傳頭貼</button><button type="button" class="btn ghost" style="min-height: 40px" onClick="{{rmAv}}" disabled="{{noAv}}">移除</button></div></div></div>
+<div class="field"><label for="a1">我是誰</label><input id="a1" value="平面設計師，正在學 AI 影音"></div>
+<div class="field"><label for="a2">擅長什麼、可以分享什麼</label><input id="a2" value="短影音剪輯、字幕排版"></div>
+<div class="field"><label for="a3">想學什麼</label><input id="a3" value="AI 運鏡、敘事結構"></div>
+<div class="row" style="justify-content: flex-end"><button type="button" class="btn">儲存</button></div>
+</form>
+</sc-if>
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}">
+<form class="card" action="#">
+<h2>帳號設定</h2>
+<div class="grid2"><div class="field"><label for="b1">Email</label><input id="b1" type="email" value="lian@example.com"></div><div class="field"><label for="b2">密碼</label><input id="b2" type="password" value="password"></div></div>
+<label class="check"><input type="checkbox" checked>收到邀請、報名結果時寄 Email 通知</label>
+<label class="check"><input type="checkbox" checked>追蹤的主理人開新活動時通知我</label>
+<div class="row" style="justify-content: flex-end"><button type="button" class="btn">儲存</button></div>
+</form>
+</sc-if>
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<section class="col" style="gap: 12px">
+<div class="row between"><h2>招募中（{{favOpenN}}）</h2><span class="small muted">點愛心可以取消收藏</span></div>
+<div class="grid3">
+<sc-for list="{{favOpen}}" as="f" hint-placeholder-count="2"><div style="position: relative"><a class="acard" href="E02_Detail.dc.html"><div class="ph">封面</div><div class="bd"><h3>{{f.name}}</h3><p class="small muted">{{f.meta}}</p></div></a><button type="button" onClick="{{f.toggleFav}}" aria-pressed="{{f.fav}}" aria-label="{{f.favLabel}}" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #d6d6d2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; position: absolute; top: 10px; right: 10px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="{{f.hf}}" stroke="{{f.hs}}" stroke-width="1.8" stroke-linejoin="round"></path></svg></button></div></sc-for>
+</div>
+<sc-if value="{{noOpen}}" hint-placeholder-val="{{ false }}"><div class="empty"><p>沒有招募中的收藏</p><a class="small" href="E01_Explore.dc.html">去探索活動</a></div></sc-if>
+</section>
+<section class="col" style="gap: 12px; border-top: 1px solid #d6d6d2; padding-top: 20px">
+<div class="row between"><h2>已結束或已截止（{{favPastN}}）</h2><span class="small muted">已經無法報名，可以追蹤主理人等下一梯</span></div>
+<div class="grid3">
+<sc-for list="{{favPast}}" as="f" hint-placeholder-count="2"><div style="position: relative; opacity: 0.7"><div class="acard"><div class="ph">封面</div><div class="bd"><span class="chip" style="align-self: flex-start">{{f.state}}</span><h3>{{f.name}}</h3><p class="small muted">{{f.meta}}</p></div></div><button type="button" onClick="{{f.toggleFav}}" aria-pressed="{{f.fav}}" aria-label="{{f.favLabel}}" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #d6d6d2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; position: absolute; top: 10px; right: 10px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="{{f.hf}}" stroke="{{f.hs}}" stroke-width="1.8" stroke-linejoin="round"></path></svg></button></div></sc-for>
+</div>
+<sc-if value="{{noPast}}" hint-placeholder-val="{{ false }}"><p class="small muted">沒有過期的收藏</p></sc-if>
+</section>
+<sc-if value="{{hasUndo}}" hint-placeholder-val="{{ false }}"><div class="toast" role="status">已取消收藏「{{undoName}}」<button type="button" class="btn ghost" style="min-height: 32px; margin-left: 8px" onClick="{{undo}}">復原</button></div></sc-if>
+</sc-if>
+<sc-if value="{{o4}}" hint-placeholder-val="{{ false }}">
+<div class="col">
+<div class="item"><span class="av" aria-hidden="true">周</span><div class="grow"><b>周亦辰</b><span class="small muted">主辦 6 場・目前 1 場招募中</span></div><button type="button" class="btn ghost">取消追蹤</button></div>
+<div class="item"><span class="av" aria-hidden="true">許</span><div class="grow"><b>許文哲</b><span class="small muted">主辦 3 場・目前 1 場招募中</span></div><button type="button" class="btn ghost">取消追蹤</button></div>
+</div>
+</sc-if>
+<sc-if value="{{o5}}" hint-placeholder-val="{{ false }}">
+<div class="grid3">
+<div class="acard"><div class="ph">作品縮圖</div><div class="bd"><h3>城市黃昏 45 秒</h3><p class="small muted">來自「AI 短片入門週」・11/20</p></div></div>
+<div class="acard"><div class="ph">作品縮圖</div><div class="bd"><h3>貓咪的一天（字幕版）</h3><p class="small muted">進行中：AI 字幕與配樂入門週</p></div></div>
+</div>
+</sc-if>
+<sc-if value="{{o6}}" hint-placeholder-val="{{ false }}">
+<div class="col">
+<div class="field"><label for="f1">加好友</label><input id="f1" placeholder="輸入對方的名稱或 Email"></div>
+<div class="item"><span class="av" aria-hidden="true">林</span><div class="grow"><b>林若涵</b><span class="small muted">一起參與：從素材到短片</span></div></div>
+<div class="item"><span class="av" aria-hidden="true">吳</span><div class="grow"><b>吳佩真</b><span class="small muted">一起參與：AI 字幕與配樂入門週</span></div></div>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"startTab":{"editor":null},"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: Number(props.startTab) || 1, av: false, fav: ['A', 'D', 'P1', 'P2', 'P3'], last: null }; }
+  renderVals() {
+    const t = this.state.t;
+
+    const s = this.state;
+    const F = [
+      ['A', '初階 AI 影片交流', '興趣社群・入門・12/14–12/17・剩 4 位', 'open', ''],
+      ['D', 'AI 繪本動畫三日體驗', '興趣社群・入門・12/19–12/21・剩 9 位', 'open', ''],
+      ['P1', '城市夜拍短片挑戰', '任務社群・基礎・11/20–11/23', 'past', '已結束'],
+      ['P2', 'AI 配音入門三晚', '技能分享社群・入門・12/05–12/07', 'past', '已結束'],
+      ['P3', '設計快閃海報挑戰（第一梯）', '任務社群・入門・12/01–12/03', 'past', '已截止']
+    ];
+    const mk = ([id, name, meta, kind, state]) => ({ name, meta, state, fav: true, hf: '#c2410c', hs: '#c2410c', favLabel: '取消收藏 ' + name, toggleFav: () => this.setState({ fav: s.fav.filter((x) => x !== id), last: id }) });
+    const shown = F.filter((f) => s.fav.includes(f[0]));
+    const favOpen = shown.filter((f) => f[3] === 'open').map(mk), favPast = shown.filter((f) => f[3] === 'past').map(mk);
+    const lastF = F.find((f) => f[0] === s.last);
+    const v = {
+      avText: s.av ? '照片' : '陳', avHint: s.av ? '已上傳。建議用正方形、看得清楚臉的照片。' : '還沒上傳，目前顯示名字縮寫。JPG 或 PNG，2MB 以內。',
+      noAv: !s.av, upAv: () => this.setState({ av: true }), rmAv: () => this.setState({ av: false }),
+      favOpen, favPast, favOpenN: favOpen.length, favPastN: favPast.length, noOpen: favOpen.length === 0, noPast: favPast.length === 0,
+      hasUndo: !!lastF && !s.fav.includes(s.last), undoName: lastF ? lastF[1] : '', undo: () => this.setState({ fav: s.fav.concat(s.last), last: null })
+    };
+    for (let i = 1; i <= 6; i++) {
+      v['c' + i] = t === i ? 'cur' : '';
+      v['o' + i] = t === i;
+      v['s' + i] = () => this.setState({ t: i });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

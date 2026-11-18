@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>活動空間｜問題與交流</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+<div class="stepper" role="group" aria-label="交流類型"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">卡關求助（2 待回覆）</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">作品交流（8）</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">與他人互動</button></div>
+
+<sc-if value="{{o1}}" hint-placeholder-val="{{ true }}">
+<div class="layout">
+<div class="main">
+<div class="fgroup" role="group" aria-label="篩選問題"><button type="button" class="fbtn cur">全部</button><button type="button" class="fbtn">待回覆</button><button type="button" class="fbtn">已解決</button><button type="button" class="fbtn">我的提問</button></div>
+<section class="card">
+<div class="row between"><div class="row" style="gap: 8px"><span class="tag">Day 3</span><span class="chip {{resCls}}"><i>狀態</i>{{resText}}</span></div><span class="small muted">你・2 小時前</span></div>
+<h3>配樂的拍點要怎麼對齊剪輯點？</h3>
+<p class="small">我把剪輯點放在鼓聲上，但輸出後還是覺得慢半拍。附上時間軸截圖。</p>
+<div class="ph" style="height: 120px">截圖</div>
+<div class="col" style="gap: 10px; padding-left: 16px; border-left: 2px solid #e4e4e0">
+<div class="col" style="gap: 4px"><div class="row" style="gap: 8px"><span class="role shr">分享者</span><b class="small">吳佩真</b><sc-if value="{{resolved}}" hint-placeholder-val="{{ false }}"><span class="chip on"><i>最佳解答</i>✓</span></sc-if></div><p class="small">剪輯點要比鼓聲早 2–3 格，因為眼睛看到畫面切換需要一點反應時間。也可以開啟「吸附到節拍」。</p></div>
+<div class="col" style="gap: 4px"><div class="row" style="gap: 8px"><b class="small">黃柏翰</b></div><p class="small">我也遇過，改用波形圖看鼓點比較準。</p></div>
+</div>
+<div class="row" style="gap: 8px"><input aria-label="回覆" placeholder="寫下你的回覆…" style="flex: 1; font: inherit; min-height: 44px; padding: 0 12px; border: 1px solid #a9a9a5; border-radius: 8px"><button type="button" class="btn ghost">回覆</button><sc-if value="{{open}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn" onClick="{{resolve}}">標記已解決</button></sc-if></div>
+</section>
+<div class="item"><div class="grow"><div class="row" style="gap: 8px"><span class="tag">Day 2</span><span class="chip"><i>狀態</i>待回覆</span></div><b>字幕匯出後跑版，字型變成預設</b><span class="small muted">李佳穎・昨天・0 則回覆</span></div><span class="small">查看 →</span></div>
+<div class="item read"><div class="grow"><div class="row" style="gap: 8px"><span class="tag">Day 1</span><span class="chip on"><i>狀態</i>已解決</span></div><b>自動字幕辨識錯字很多怎麼辦？</b><span class="small muted">周子晴・12/07・3 則回覆・分享者已回覆</span></div><span class="small">查看 →</span></div>
+</div>
+<aside class="side">
+<form class="card" action="#">
+<h3>我卡關了</h3>
+<div class="field"><label for="qt">問題標題</label><input id="qt" placeholder="一句話說明卡在哪"></div>
+<div class="field"><label for="qd">是哪一天的任務？</label><select id="qd"><option>Day 3：配樂與節奏</option><option>Day 2：字幕排版</option><option>Day 1：自動字幕</option><option>其他</option></select></div>
+<div class="field"><label for="qx">詳細描述</label><textarea id="qx" placeholder="做到哪一步、試過什麼"></textarea></div>
+<button type="button" class="btn ghost">附上截圖或連結</button>
+<button type="button" class="btn">送出問題</button>
+<p class="small muted">分享者和其他學員都看得到，也都可以回覆。</p>
+</form>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<div class="row between"><div class="fgroup"><button type="button" class="fbtn cur">全部</button><button type="button" class="fbtn">Day 3</button><button type="button" class="fbtn">Day 2</button><button type="button" class="fbtn">我的作品</button></div><button type="button" class="btn">分享我的作品</button></div>
+<div class="grid3">
+<sc-for list="{{works}}" as="w" hint-placeholder-count="6">
+<button type="button" class="acard" style="font: inherit; text-align: left; cursor: pointer; padding: 0; border-color: {{w.ring}}; border-width: {{w.ringW}}" onClick="{{w.pick}}"><div class="ph">作品縮圖</div><div class="bd"><b class="small">{{w.title}}</b><span class="small muted">{{w.by}}・{{w.day}}</span><span class="small muted">讚 {{w.likes}}・回饋 {{w.fb}}</span></div></button>
+</sc-for>
+</div>
+</div>
+<aside class="side">
+<section class="card">
+<div class="ph" style="height: 160px">影片播放</div>
+<h3>{{cur.title}}</h3>
+<span class="small muted">{{cur.by}}・{{cur.day}}・{{cur.note}}</span>
+<div class="row" style="gap: 8px"><button type="button" class="btn ghost">讚 {{cur.likes}}</button></div>
+<div class="col" style="gap: 8px">
+<div class="note"><span class="tag">優點</span> <span class="small">配樂和轉場很合，節奏很舒服。— 黃柏翰</span></div>
+<div class="note"><span class="tag">建議</span> <span class="small">結尾字幕可以停久一點。— 吳佩真（分享者）</span></div>
+</div>
+<div class="field"><label for="g1">優點</label><input id="g1" placeholder="哪裡做得好？"></div>
+<div class="field"><label for="g2">建議</label><input id="g2" placeholder="哪裡可以更好？"></div>
+<button type="button" class="btn">送出回饋</button>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<section class="col" style="gap: 12px">
+<div class="row between"><h2>這次一起參加的人（14）</h2><input aria-label="搜尋成員" type="search" placeholder="搜尋名字或擅長的事" style="font: inherit; min-height: 44px; padding: 0 12px; border: 1px solid #a9a9a5; border-radius: 8px; min-width: 240px"></div>
+<div class="grid2">
+<sc-for list="{{members}}" as="m" hint-placeholder-count="4">
+<div class="card" style="padding: 16px; gap: 10px"><div class="row" style="gap: 10px"><span class="av" aria-hidden="true">{{m.initial}}</span><div class="col" style="gap: 0; flex: 1"><b>{{m.name}}</b><span class="small muted">{{m.intro}}</span></div><span class="role {{m.roleCls}}">{{m.role}}</span></div><span class="small">擅長：{{m.good}}・想學：{{m.want}}</span><div class="row" style="gap: 8px"><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px" onClick="{{m.add}}">{{m.addText}}</button><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px">邀請互評</button></div></div>
+</sc-for>
+</div>
+</section>
+</div>
+<aside class="side">
+<section class="card">
+<h3>找互評夥伴</h3>
+<p class="small muted">配對一位夥伴，互看彼此每天的作品並留回饋。</p>
+<button type="button" class="btn">幫我配對</button>
+</section>
+<section class="card">
+<h3>閒聊</h3>
+<div class="col" style="gap: 8px">
+<div class="small"><b>周子晴</b>：有人也是下班才開始做嗎？</div>
+<div class="small"><b>黃柏翰</b>：+1，大概 10 點才開工</div>
+<div class="small"><b>何承恩</b> <span class="role host">主理人</span>：週六有線上作品分享會，歡迎來</div>
+</div>
+<div class="row" style="gap: 8px"><input aria-label="輸入訊息" placeholder="說點什麼…" style="flex: 1; font: inherit; min-height: 44px; padding: 0 12px; border: 1px solid #a9a9a5; border-radius: 8px"><button type="button" class="btn ghost">送出</button></div>
+</section>
+</aside>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1400}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 1, resolved: false, work: 0, friends: [] }; }
+  renderVals() {
+    const { t, resolved, work, friends } = this.state;
+    const W = [
+      { title: '貓咪的一天（配樂版）', by: '你', day: 'Day 3', likes: 6, fb: 2, note: '半成品' },
+      { title: '早餐店的早晨', by: '黃柏翰', day: 'Day 3', likes: 9, fb: 4, note: '完成' },
+      { title: '雨天的公車站', by: '李佳穎', day: 'Day 2', likes: 4, fb: 1, note: '完成' },
+      { title: '週末市集', by: '周子晴', day: 'Day 2', likes: 7, fb: 3, note: '完成' },
+      { title: '夜跑紀錄', by: '陳奕廷', day: 'Day 3', likes: 2, fb: 0, note: '半成品' },
+      { title: '咖啡拉花', by: '林若涵', day: 'Day 1', likes: 5, fb: 2, note: '完成' }
+    ];
+    const M = [
+      { initial: '吳', name: '吳佩真', role: '分享者', roleCls: 'shr', intro: '影像剪輯師，這週帶課', good: '剪輯節奏、配樂', want: '動態字幕' },
+      { initial: '黃', name: '黃柏翰', role: '學習者', roleCls: 'lrn', intro: '工程師，週末拍街景', good: '拍攝', want: '剪輯' },
+      { initial: '李', name: '李佳穎', role: '學習者', roleCls: 'lrn', intro: '行銷企劃', good: '文案', want: '配樂' },
+      { initial: '周', name: '周子晴', role: '學習者', roleCls: 'lrn', intro: '大學生，第一次剪片', good: '插畫', want: '字幕排版' }
+    ];
+    const v = {
+      resolved, open: !resolved, resText: resolved ? '已解決' : '待回覆', resCls: resolved ? 'on' : '',
+      resolve: () => this.setState({ resolved: true }),
+      works: W.map((w, i) => ({ ...w, ring: i === work ? '#1f1f1f' : '#d6d6d2', ringW: i === work ? '2px' : '1px', pick: () => this.setState({ work: i }) })),
+      cur: W[work],
+      members: M.map((m) => ({ ...m, addText: friends.includes(m.name) ? '已送出邀請' : '加好友', add: () => this.setState({ friends: friends.concat(m.name) }) }))
+    };
+    for (let i = 1; i <= 3; i++) { v['c' + i] = t === i ? 'cur' : ''; v['o' + i] = t === i; v['s' + i] = () => this.setState({ t: i }); }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

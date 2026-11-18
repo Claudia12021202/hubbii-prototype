@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>探索活動</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html" onClick="{{goHome}}">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a class="cur" href="E01_Explore.dc.html" onClick="{{goHome}}">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+
+<sc-if value="{{isHome}}" hint-placeholder-val="{{ true }}">
+<section style="background: #e4e4e0; border-bottom: 1px solid #d6d6d2">
+<div class="wrap" style="padding-top: 48px; padding-bottom: 36px; gap: 18px; align-items: center; text-align: center">
+<span class="small muted">主視覺</span>
+<h1>這個月，和大家一起做出一件作品</h1>
+<div style="position: relative; width: 100%; max-width: 980px">
+<div role="search" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) auto; border: 1px solid #a9a9a5; border-radius: 999px; background: #fff; text-align: left; overflow: hidden">
+<div class="field" style="padding: 8px 20px; gap: 0"><label for="kw" class="small" style="font-size: 12px">關鍵字</label><input id="kw" type="search" placeholder="想學什麼？剪輯、海報…" value="{{hq}}" onChange="{{onHq}}" style="border: 0; padding: 0; min-height: 28px"></div>
+<button type="button" onClick="{{openType}}" aria-expanded="{{isType}}" style="font: inherit; border: 0; border-left: 1px solid #e4e4e0; background: {{bgType}}; padding: 8px 20px; text-align: left; cursor: pointer; min-height: 56px"><span class="small" style="display: block; font-size: 12px; font-weight: 600">參與方式</span><span class="small muted">{{typeLabel}}</span></button>
+<button type="button" onClick="{{openDate}}" aria-expanded="{{isDate}}" style="font: inherit; border: 0; border-left: 1px solid #e4e4e0; background: {{bgDate}}; padding: 8px 20px; text-align: left; cursor: pointer"><span class="small" style="display: block; font-size: 12px; font-weight: 600">日期</span><span class="small muted">{{dateLabel}}</span></button>
+<button type="button" onClick="{{openLevel}}" aria-expanded="{{isLevel}}" style="font: inherit; border: 0; border-left: 1px solid #e4e4e0; background: {{bgLevel}}; padding: 8px 20px; text-align: left; cursor: pointer"><span class="small" style="display: block; font-size: 12px; font-weight: 600">程度</span><span class="small muted">{{levelLabel}}</span></button>
+<div style="padding: 6px"><button type="button" class="btn" style="border-radius: 999px; height: 100%" onClick="{{doSearch}}">搜尋</button></div>
+</div>
+<sc-if value="{{isType}}" hint-placeholder-val="{{ false }}">
+<div class="dd" style="left: 25%; right: auto; top: 76px; width: 340px" role="region" aria-label="選擇參與方式">
+<sc-for list="{{typeOpts}}" as="o" hint-placeholder-count="4"><button type="button" class="ni" style="font: inherit; border: 0; background: {{o.bg}}; cursor: pointer; text-align: left" onClick="{{o.pick}}"><b>{{o.label}}</b><span class="small muted">{{o.desc}}</span></button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{isDate}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; left: 50%; transform: translateX(-50%); top: 76px; z-index: 30" role="region" aria-label="選擇日期">
+<dc-import name="DatePick" mode="{{hd.mode}}" ds="{{hd.ds}}" de="{{hd.de}}" on-pick="{{pickH}}" on-done="{{closeDd}}" hint-size="660px,430px"></dc-import>
+</div>
+</sc-if>
+<sc-if value="{{isLevel}}" hint-placeholder-val="{{ false }}">
+<div class="dd" style="left: auto; right: 100px; top: 76px; width: 280px" role="region" aria-label="選擇程度">
+<sc-for list="{{levelOpts}}" as="o" hint-placeholder-count="3"><button type="button" class="ni" style="font: inherit; border: 0; background: {{o.bg}}; cursor: pointer; text-align: left" onClick="{{o.pick}}"><b>{{o.label}}</b><span class="small muted">{{o.desc}}</span></button></sc-for>
+</div>
+</sc-if>
+</div>
+<div class="row" style="justify-content: center; gap: 8px" role="group" aria-label="快速篩選，點了會到篩選頁">
+<sc-for list="{{quick}}" as="c" hint-placeholder-count="5"><button type="button" class="fbtn" onClick="{{c.go}}">{{c.label}}</button></sc-for>
+</div>
+</div>
+</section>
+
+<main class="wrap">
+<section class="col" style="gap: 12px">
+<h2>你想怎麼參與？</h2>
+<div class="grid3">
+<sc-for list="{{typeCards}}" as="t" hint-placeholder-count="3">
+<button type="button" class="card" style="font: inherit; text-align: left; cursor: pointer" onClick="{{t.go}}"><b style="font-size: 18px">{{t.label}}</b><span class="small">{{t.desc}}</span><span class="small muted">{{t.n}} 個活動招募中・看這類活動 →</span></button>
+</sc-for>
+</div>
+</section>
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+<section class="col" style="gap: 12px">
+<div class="row between"><h2>{{r.title}}</h2><button type="button" class="btn ghost" onClick="{{r.see}}">看全部</button></div>
+<div class="tablebox"><div style="display: grid; grid-template-columns: repeat(3, 300px); gap: 16px; padding-bottom: 8px">
+<sc-for list="{{r.cards}}" as="c" hint-placeholder-count="3"><div style="position: relative"><a class="acard" href="E02_Detail.dc.html"><div class="ph">封面</div><div class="bd"><span class="small muted">{{c.typeName}}・{{c.level}}</span><h3>{{c.name}}</h3><p class="small muted">{{c.date}}・{{c.seats}}</p></div></a><button type="button" onClick="{{c.toggleFav}}" aria-pressed="{{c.fav}}" aria-label="{{c.favLabel}}" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #d6d6d2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; position: absolute; top: 10px; right: 10px"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="{{c.hf}}" stroke="{{c.hs}}" stroke-width="1.8" stroke-linejoin="round"></path></svg></button></div></sc-for>
+</div></div>
+</section>
+</sc-for>
+<div class="row" style="justify-content: center"><button type="button" class="btn" onClick="{{seeAll}}">瀏覽全部活動</button></div>
+</main>
+</sc-if>
+
+<sc-if value="{{isResults}}" hint-placeholder-val="{{ false }}">
+<main class="wrap">
+<div class="row between">
+<div class="col" style="gap: 4px"><p class="crumb"><button type="button" onClick="{{goHome}}" style="font: inherit; font-size: 14px; color: #5c5c58; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline">探索活動</button> / 篩選活動</p><h1>{{resultTitle}}</h1></div>
+<div class="field" style="flex: 1 1 360px; max-width: 480px"><label for="q" class="small muted" style="font-weight: 400">搜尋</label><input id="q" type="search" placeholder="搜尋活動名稱、關鍵字" value="{{q}}" onChange="{{onQ}}"></div>
+</div>
+<div class="layout">
+<aside class="side" style="flex: 1 1 260px; max-width: 300px">
+<section class="card" style="gap: 20px">
+<div class="row between"><h2>篩選</h2><button type="button" class="btn ghost" style="min-height: 36px; padding: 0 12px; font-size: 13px" onClick="{{clearAll}}">全部清除</button></div>
+<fieldset class="fs"><legend>參與方式</legend>
+<label class="check"><input type="checkbox" checked="{{tInt}}" onChange="{{xInt}}">興趣社群</label>
+<label class="check"><input type="checkbox" checked="{{tSkl}}" onChange="{{xSkl}}">技能分享社群</label>
+<label class="check"><input type="checkbox" checked="{{tTsk}}" onChange="{{xTsk}}">任務社群</label>
+</fieldset>
+<fieldset class="fs"><legend>程度</legend>
+<label class="check"><input type="checkbox" checked="{{lBas}}" onChange="{{xBas}}">入門</label>
+<label class="check"><input type="checkbox" checked="{{lMid}}" onChange="{{xMid}}">基礎</label>
+<label class="check"><input type="checkbox" checked="{{lAdv}}" onChange="{{xAdv}}">進階</label>
+</fieldset>
+<fieldset class="fs" style="position: relative"><legend>活動日期</legend>
+<button type="button" onClick="{{toggleR}}" aria-expanded="{{rOpen}}" style="font: inherit; text-align: left; min-height: 44px; padding: 0 12px; border: 1px solid #a9a9a5; border-radius: 8px; background: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 8px"><span>{{rDateLabel}}</span><span class="small muted">{{rArrow}}</span></button>
+<sc-if value="{{rOpen}}" hint-placeholder-val="{{ false }}"><div style="position: absolute; left: 0; top: 100%; margin-top: 6px; z-index: 30"><dc-import name="DatePick" mode="{{rd.mode}}" ds="{{rd.ds}}" de="{{rd.de}}" on-pick="{{pickR}}" on-done="{{closeR}}" hint-size="660px,430px"></dc-import></div></sc-if>
+</fieldset>
+<fieldset class="fs"><legend>其他</legend>
+<label class="check"><input type="checkbox" checked="{{eve}}" onChange="{{xEve}}">晚上上課</label>
+<label class="check"><input type="checkbox" checked="{{few}}" onChange="{{xFew}}">名額快滿</label>
+</fieldset>
+<fieldset class="fs"><legend>主題標籤</legend>
+<div class="field" style="margin-bottom: 6px"><label for="tq" class="small muted" style="font-weight: 400">搜尋標籤</label><input id="tq" type="search" placeholder="輸入標籤，例如：剪輯" value="{{tq}}" onChange="{{onTq}}"></div>
+<sc-for list="{{tags}}" as="tag" hint-placeholder-count="5"><label class="check"><input type="checkbox">{{tag.name}}<span class="small muted">（{{tag.n}}）</span></label></sc-for>
+<sc-if value="{{noTag}}" hint-placeholder-val="{{ false }}"><p class="small muted">找不到這個標籤</p></sc-if>
+</fieldset>
+</section>
+</aside>
+<div class="main" style="gap: 16px">
+<div class="row between"><p role="status"><b>{{count}}</b> 個招募中的活動</p><div class="row" style="gap: 8px"><label for="so" class="small muted">排序</label><select id="so" style="font: inherit; min-height: 44px; padding: 0 10px; border: 1px solid #a9a9a5; border-radius: 8px; background: #fff"><option>即將開始</option><option>剩餘名額少</option></select></div></div>
+<sc-if value="{{hasChips}}" hint-placeholder-val="{{ true }}">
+<div class="row" style="gap: 8px"><span class="small muted">已套用：</span>
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="2"><button type="button" class="chip" style="cursor: pointer; min-height: 32px; font: inherit; font-size: 13px" onClick="{{c.remove}}" aria-label="移除篩選 {{c.label}}">{{c.label}} ✕</button></sc-for>
+</div>
+</sc-if>
+<sc-for list="{{items}}" as="it" hint-placeholder-count="3">
+<div class="row" style="gap: 8px; align-items: flex-start"><a class="item" href="E02_Detail.dc.html" style="align-items: stretch; flex: 1"><div class="ph" style="width: 160px; min-height: 110px">封面</div><div class="grow"><div class="chips"><span class="chip"><i>類型</i>{{it.typeName}}</span><span class="chip"><i>程度</i>{{it.level}}</span></div><b style="font-size: 17px">{{it.name}}</b><span class="small muted">{{it.date}}・每日 {{it.time}}</span><span class="small">{{it.desc}}</span></div><div class="col" style="align-items: flex-end; justify-content: space-between"><span class="small">{{it.seats}}</span><span class="small">查看 →</span></div></a><button type="button" onClick="{{it.toggleFav}}" aria-pressed="{{it.fav}}" aria-label="{{it.favLabel}}" style="width: 44px; height: 44px; border-radius: 999px; border: 1px solid #d6d6d2; background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="{{it.hf}}" stroke="{{it.hs}}" stroke-width="1.8" stroke-linejoin="round"></path></svg></button></div>
+</sc-for>
+<sc-if value="{{none}}" hint-placeholder-val="{{ false }}"><div class="empty"><p>沒有符合條件的活動</p><p class="small">試著移除上方的條件</p></div></sc-if>
+</div>
+</div>
+</main>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2000}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { screen: 'home', open: '', hType: 'all', hd: { mode: 'any', ds: null, de: null }, hLevel: 'all', hq: '',
+      types: [], levels: [], rd: { mode: 'any', ds: null, de: null }, rOpen: false, eve: false, few: false, q: '', tq: '', title: '全部活動', fav: ['A'] };
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.screen !== this.state.screen && typeof window !== 'undefined') window.scrollTo(0, 0);
+  }
+  renderVals() {
+    const s = this.state;
+    const TN = { int: '興趣社群', skl: '技能分享社群', tsk: '任務社群' };
+    const TD = { int: '每天一堂課＋當天任務，跟著做完自己的作品', skl: '不同分享者各講一場，挑想聽的參加', tsk: '組隊分工，一起完成一件作品' };
+    const LN = { basic: '入門', mid: '基礎', adv: '進階' };
+    const ANY = { mode: 'any', ds: null, de: null }, NEXT = { mode: 'next', ds: 14, de: 20 };
+    const fmt = (n) => (n <= 31 ? '12/' + n : '1/' + (n - 31));
+    const dlab = (d) => (d.mode === 'any' ? '不限日期' : d.mode === 'next' ? '下週（12/14–12/20）' : d.de != null ? fmt(d.ds) + '–' + fmt(d.de) : fmt(d.ds) + ' 起');
+    const inRange = (a) => { const d = s.rd; if (d.mode === 'any' || d.ds == null) return true; const hi = d.de ?? 99; return a.s <= hi && a.e >= d.ds; };
+    const all = [
+      { id: 'A', name: '初階 AI 影片交流', type: 'int', lv: 'basic', s: 14, e: 17, eve: true, few: true, time: '20:00–21:00', seats: '剩 4 位', desc: '沒剪過片也可以，每天一堂課＋當天任務，個人完成第一支短片' },
+      { id: 'B', name: '設計快閃海報挑戰', type: 'tsk', lv: 'basic', s: 15, e: 17, eve: false, few: true, time: '彈性', seats: '剩 6 位', desc: '3–4 人組隊，三天合力完成一張海報' },
+      { id: 'C', name: 'AI 剪輯技巧交流週', type: 'skl', lv: 'mid', s: 19, e: 21, eve: true, few: false, time: '20:00–20:40', seats: '剩 15 位', desc: '三晚由不同分享者各分享一套剪輯技巧' },
+      { id: 'D', name: 'AI 繪本動畫三日體驗', type: 'int', lv: 'basic', s: 19, e: 21, eve: true, few: false, time: '19:30–20:30', seats: '剩 9 位', desc: '把一張插畫變成 15 秒的小動畫' },
+      { id: 'E', name: '品牌短影音企劃小隊', type: 'tsk', lv: 'adv', s: 20, e: 24, eve: false, few: true, time: '彈性', seats: '剩 3 位', desc: '分工企劃、拍攝、剪輯，完成一支品牌短片' }
+    ];
+    const deco = (a) => { const on = s.fav.includes(a.id); return { ...a, date: fmt(a.s) + '–' + fmt(a.e), typeName: TN[a.type], level: LN[a.lv], fav: on, hf: on ? '#c2410c' : 'none', hs: on ? '#c2410c' : '#1f1f1f', favLabel: on ? '取消收藏 ' + a.name : '收藏 ' + a.name, toggleFav: () => this.setState({ fav: on ? s.fav.filter((x) => x !== a.id) : s.fav.concat(a.id) }) }; };
+    const base = { types: [], levels: [], rd: ANY, rOpen: false, eve: false, few: false, q: '', tq: '' };
+    const go = (preset, title) => () => this.setState({ ...base, ...preset, title, screen: 'results', open: '' });
+
+    // home
+    const seg = (k) => () => this.setState({ open: s.open === k ? '' : k });
+    const bg = (k) => (s.open === k ? '#f4f4f2' : '#fff');
+    const opt = (key, v, label, desc) => ({ label, desc, bg: s[key] === v ? '#f4f4f2' : '#fff', pick: () => this.setState({ [key]: v, open: '' }) });
+    const Q = [
+      ['下週開始', { rd: NEXT }], ['新手友善', { levels: ['basic'] }], ['晚上上課', { eve: true }],
+      ['個人完成作品', { types: ['int', 'skl'] }], ['名額快滿', { few: true }]
+    ];
+
+    // results
+    const items = all.filter((a) =>
+      (s.types.length === 0 || s.types.includes(a.type)) && (s.levels.length === 0 || s.levels.includes(a.lv)) &&
+      inRange(a) && (!s.eve || a.eve) && (!s.few || a.few) &&
+      (s.q === '' || a.name.includes(s.q) || a.desc.includes(s.q))
+    ).map(deco);
+    const tog = (key, v) => () => { const arr = s[key]; this.setState({ [key]: arr.includes(v) ? arr.filter((x) => x !== v) : arr.concat(v) }); };
+    const chips = s.types.map((t) => ({ label: TN[t], remove: tog('types', t) }))
+      .concat(s.levels.map((l) => ({ label: LN[l], remove: tog('levels', l) })))
+      .concat(s.rd.mode !== 'any' ? [{ label: '日期：' + dlab(s.rd), remove: () => this.setState({ rd: ANY }) }] : [])
+      .concat(s.eve ? [{ label: '晚上上課', remove: () => this.setState({ eve: false }) }] : [])
+      .concat(s.few ? [{ label: '名額快滿', remove: () => this.setState({ few: false }) }] : [])
+      .concat(s.q ? [{ label: '關鍵字：' + s.q, remove: () => this.setState({ q: '' }) }] : []);
+    const TAGS = [['AI 影音', 4], ['剪輯', 2], ['動畫', 1], ['設計', 1], ['海報', 1], ['品牌', 1]];
+    const tags = TAGS.filter((t) => s.tq === '' || t[0].includes(s.tq)).map((t) => ({ name: t[0], n: t[1] }));
+
+    return {
+      isHome: s.screen === 'home', isResults: s.screen === 'results', goHome: () => this.setState({ screen: 'home', open: '', rOpen: false }),
+      hq: s.hq, onHq: (e) => this.setState({ hq: e.target.value }),
+      isType: s.open === 'type', isDate: s.open === 'date', isLevel: s.open === 'level',
+      openType: seg('type'), openDate: seg('date'), openLevel: seg('level'),
+      bgType: bg('type'), bgDate: bg('date'), bgLevel: bg('level'),
+      typeLabel: s.hType === 'all' ? '全部類型' : TN[s.hType], dateLabel: dlab(s.hd), levelLabel: s.hLevel === 'all' ? '全部程度' : LN[s.hLevel],
+      typeOpts: [opt('hType', 'all', '全部類型', ''), opt('hType', 'int', '興趣社群', TD.int), opt('hType', 'skl', '技能分享社群', TD.skl), opt('hType', 'tsk', '任務社群', TD.tsk)],
+      hd: s.hd, pickH: (v) => this.setState({ hd: v }), closeDd: () => this.setState({ open: '' }),
+      levelOpts: [opt('hLevel', 'all', '全部程度', ''), opt('hLevel', 'basic', '入門', '沒經驗也可以'), opt('hLevel', 'mid', '基礎', '有一點經驗，想把基本功打穩'), opt('hLevel', 'adv', '進階', '需要相關經驗')],
+      doSearch: go({ types: s.hType === 'all' ? [] : [s.hType], levels: s.hLevel === 'all' ? [] : [s.hLevel], rd: s.hd, q: s.hq }, s.hq ? '「' + s.hq + '」的搜尋結果' : '搜尋結果'),
+      quick: Q.map(([label, preset]) => ({ label, go: go(preset, label + '的活動') })),
+      typeCards: ['int', 'skl', 'tsk'].map((k) => ({ label: TN[k], desc: TD[k], n: all.filter((a) => a.type === k).length, go: go({ types: [k] }, TN[k] + '的活動') })),
+      seeNext: go({ rd: NEXT }, '下週就開始'), seeBasic: go({ levels: ['basic'] }, '新手友善'), seeFew: go({ few: true }, '名額快滿'),
+      seeAll: go({}, '全部活動'),
+      rows: [['下週就開始', all.filter((a) => a.s >= 14 && a.s <= 20 && a.s < 19), go({ rd: NEXT }, '下週就開始')], ['新手友善', all.filter((a) => a.lv !== 'adv'), go({ levels: ['basic', 'mid'] }, '新手友善')], ['名額快滿', all.filter((a) => a.few), go({ few: true }, '名額快滿')]].map(([title, list, see]) => ({ title, see, cards: list.map(deco) })),
+      resultTitle: s.title, q: s.q, tq: s.tq,
+      onQ: (e) => this.setState({ q: e.target.value }), onTq: (e) => this.setState({ tq: e.target.value }),
+      items, count: items.length, none: items.length === 0, chips, hasChips: chips.length > 0, tags, noTag: tags.length === 0,
+      tInt: s.types.includes('int'), tSkl: s.types.includes('skl'), tTsk: s.types.includes('tsk'),
+      lBas: s.levels.includes('basic'), lMid: s.levels.includes('mid'), lAdv: s.levels.includes('adv'),
+      xInt: tog('types', 'int'), xSkl: tog('types', 'skl'), xTsk: tog('types', 'tsk'), xBas: tog('levels', 'basic'), xMid: tog('levels', 'mid'), xAdv: tog('levels', 'adv'),
+      rd: s.rd, rOpen: s.rOpen, rDateLabel: dlab(s.rd), rArrow: s.rOpen ? '收合' : '選擇', toggleR: () => this.setState({ rOpen: !s.rOpen }), closeR: () => this.setState({ rOpen: false }), pickR: (v) => this.setState({ rd: v }),
+      eve: s.eve, few: s.few, xEve: () => this.setState({ eve: !s.eve }), xFew: () => this.setState({ few: !s.few }),
+      clearAll: () => this.setState({ ...base })
+    };
+  }
+}
+</script>
+</body>
+</html>

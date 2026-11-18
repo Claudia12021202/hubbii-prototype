@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>受測任務便條紙</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>
+body{margin:0}
+.tn-btn{font:inherit;font-size:14px;min-height:44px;padding:0 14px;border-radius:6px;border:1px solid #c9b44a;background:#fffbe0;color:#2b2410;cursor:pointer}
+.tn-btn:hover{background:#fff6c2}
+.tn-btn.on{background:#2b2410;border-color:#2b2410;color:#fff8d6;font-weight:600}
+.tn-mini{font:inherit;font-size:14px;min-height:44px;min-width:44px;padding:0 10px;border-radius:6px;border:1px dashed #b8a24a;background:transparent;color:#5e4f17;cursor:pointer}
+.tn-mini.on{border-style:solid;background:#f3df7a;color:#2b2410;font-weight:600}
+</style>
+</helmet>
+<div style="position: fixed; {{side}}: 20px; bottom: 20px; z-index: 9999; width: 360px; max-width: calc(100vw - 40px); font-family: 'Noto Sans TC', system-ui, sans-serif; color: #2b2410; line-height: 1.6; font-size: 15px">
+<sc-if value="{{open}}" hint-placeholder-val="{{ true }}">
+<section aria-label="受測任務" style="background: #fff2a8; border: 1px solid #e3cf63; border-radius: 4px; box-shadow: 0 10px 28px rgba(40, 32, 0, 0.22); padding: 16px 18px 14px; display: flex; flex-direction: column; gap: 12px; transform: rotate(-0.6deg)">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+<b style="font-size: 16px">你的任務</b>
+<div style="display: flex; gap: 6px">
+<button type="button" class="tn-btn" onClick="{{flip}}" aria-label="{{flipLabel}}">{{flipText}}</button>
+<button type="button" class="tn-btn" onClick="{{toggle}}" aria-expanded="true">收起</button>
+</div>
+</div>
+<div style="display: flex; gap: 6px" role="group" aria-label="切換任務">
+<button type="button" class="{{aCls}}" onClick="{{pickA}}" aria-pressed="{{isA}}">任務 A</button>
+<button type="button" class="{{bCls}}" onClick="{{pickB}}" aria-pressed="{{isB}}">任務 B</button>
+</div>
+<sc-if value="{{showLater}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; align-self: flex-start; background: #2b2410; color: #fff8d6; border-radius: 4px; padding: 2px 10px; font-size: 13px; font-weight: 600">{{laterText}}</p>
+</sc-if>
+<p style="margin: 0; white-space: pre-line">{{text}}</p>
+<p style="margin: 0; font-size: 13px; color: #5e4f17; border-top: 1px dashed #c9b44a; padding-top: 10px">請邊操作邊說出你看到什麼、在想什麼。覺得完成了，請告訴主持人。</p>
+<div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap" role="group" aria-label="主持人切換腳本">
+<span style="font-size: 12px; color: #5e4f17">主持人：</span>
+<button type="button" class="{{r1Cls}}" onClick="{{pickR1}}" aria-pressed="{{isR1}}" aria-label="腳本 1">1</button>
+<button type="button" class="{{r2Cls}}" onClick="{{pickR2}}" aria-pressed="{{isR2}}" aria-label="腳本 2">2</button>
+</div>
+</section>
+</sc-if>
+<sc-if value="{{closed}}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{toggle}}" aria-expanded="false" style="font: inherit; font-size: 15px; font-weight: 600; min-height: 48px; padding: 0 18px; border-radius: 4px; border: 1px solid #e3cf63; background: #fff2a8; color: #2b2410; box-shadow: 0 6px 18px rgba(40, 32, 0, 0.2); cursor: pointer">查看題目（{{taskName}}）</button>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":420,"height":560}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { open: true, round: 'r2', task: 'A', side: 'left' };
+  }
+  componentDidMount() {
+    try {
+      const raw = window.localStorage.getItem('hubbii-tasknote');
+      if (raw) this.setState(JSON.parse(raw));
+    } catch (e) {}
+  }
+  save(patch) {
+    const next = { ...this.state, ...patch };
+    this.setState(patch);
+    try {
+      window.localStorage.setItem('hubbii-tasknote', JSON.stringify({ open: next.open, round: next.round, task: next.task, side: next.side }));
+    } catch (e) {}
+  }
+  renderVals() {
+    const s = this.state;
+    const T = {
+      r1: {
+        A: '你平常會用 AI 做短影片，最近在 Hubbii 上辦了一個線上的 AI 影片交流活動，正在收人。\n\n另外，前幾天有另一個社群的主辦人說，想請你去講一場剪輯心得。\n\n今天你打開 Hubbii，想先看看對方到底想請你講什麼，再決定要不要答應。',
+        B: '你再打開 Hubbii，想看看自己辦的活動有沒有新的人想參加，並決定要不要讓他加入。\n\n另外，也看看另一個社群的狀況：如果你答應了邀請，就開始準備這場分享；如果你沒有答應，就去看看對方回覆後的結果。'
+      },
+      r2: {
+        A: '你對用 AI 做影片有興趣，但沒有剪過片。\n\n12 月 10 日到 20 日那幾天你有空，想找一個適合新手、可以跟大家輕鬆交流、不用組隊，每天跟著課程和任務一步步做、最後自己完成作品的線上活動。\n\n請找一個你覺得適合的活動並報名參加。如果沒有適合的，也可以說明原因。',
+        B: '你想知道上次報名的那個活動結果如何，也想看看活動開始前自己要準備什麼。\n\n請打開 Hubbii 看看。'
+      }
+    };
+    const later = { r1: '隔天', r2: '現在時間已過 2 天' };
+    const isA = s.task === 'A', isB = s.task === 'B';
+    return {
+      open: s.open, closed: !s.open, side: s.side === 'right' ? 'right' : 'left',
+      text: T[s.round][s.task],
+      showLater: isB, laterText: later[s.round],
+      taskName: '任務 ' + s.task,
+      isA, isB, aCls: isA ? 'tn-btn on' : 'tn-btn', bCls: isB ? 'tn-btn on' : 'tn-btn',
+      isR1: s.round === 'r1', isR2: s.round === 'r2',
+      r1Cls: s.round === 'r1' ? 'tn-mini on' : 'tn-mini', r2Cls: s.round === 'r2' ? 'tn-mini on' : 'tn-mini',
+      flipText: s.side === 'right' ? '移到左邊' : '移到右邊',
+      flipLabel: s.side === 'right' ? '把便條紙移到畫面左下' : '把便條紙移到畫面右下',
+      toggle: () => this.save({ open: !s.open }),
+      flip: () => this.save({ side: s.side === 'right' ? 'left' : 'right' }),
+      pickA: () => this.save({ task: 'A' }), pickB: () => this.save({ task: 'B' }),
+      pickR1: () => this.save({ round: 'r1', task: 'A' }), pickR2: () => this.save({ round: 'r2', task: 'A' })
+    };
+  }
+}
+</script>
+</body>
+</html>

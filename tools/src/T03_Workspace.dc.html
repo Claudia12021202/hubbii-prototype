@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>分享工作區｜手機短片剪輯 3 日練習</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a class="cur" href="T01_SharerList.dc.html">我分享的</a><a href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<p class="crumb"><a href="T01_SharerList.dc.html">我分享的</a> / 分享工作區</p>
+<div class="row between"><div class="col" style="gap: 6px"><span class="role shr">分享者</span><h1>手機短片剪輯 3 日練習｜分享工作區</h1><p class="muted">興趣社群・12/14–12/16・每晚 19:30–20:30・主理人 王思妤</p></div><div class="chips"><span class="chip on"><i>分享邀請</i>已接受</span><span class="chip"><i>活動</i>準備中・12/14 開始</span></div></div>
+<div class="tabs" role="group" aria-label="分享工作區"><button type="button" class="{{c1}}" aria-pressed="{{o1}}" onClick="{{s1}}">課程規劃</button><button type="button" class="{{c2}}" aria-pressed="{{o2}}" onClick="{{s2}}">課程準備</button><button type="button" class="{{c3}}" aria-pressed="{{o3}}" onClick="{{s3}}">同步教學</button><button type="button" class="{{c4}}" aria-pressed="{{o4}}" onClick="{{s4}}">學員進度</button><button type="button" class="{{c5}}" aria-pressed="{{o5}}" onClick="{{s5}}">問題與回饋</button><button type="button" class="{{c6}}" aria-pressed="{{o6}}" onClick="{{s6}}">作品審閱</button></div>
+<sc-if value="{{o1}}" hint-placeholder-val="{{ true }}"><dc-import name="T03_Plan" hint-size="100%,1200px"></dc-import></sc-if>
+<sc-if value="{{o2}}" hint-placeholder-val="{{ false }}"><dc-import name="T03_Prep" hint-size="100%,1100px"></dc-import></sc-if>
+<sc-if value="{{other}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+
+
+
+<sc-if value="{{o3}}" hint-placeholder-val="{{ false }}">
+<form class="card" action="#">
+<div class="col" style="gap: 2px"><h2>同步教學</h2><p class="small muted">上課資訊。上課連結使用外部會議連結（Google Meet 或 Zoom）。</p></div>
+<div class="field"><label for="lk">上課連結</label><input id="lk" placeholder="貼上 Google Meet 或 Zoom 連結"></div>
+<div class="field"><label for="rp">回放連結（課後補上）</label><input id="rp" placeholder="課後貼上回放影片連結"></div>
+<div class="row" style="justify-content: flex-end"><button type="button" class="btn ghost">儲存</button></div>
+</form>
+</sc-if>
+
+<sc-if value="{{o4}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>學員進度</h2><div class="empty"><p>活動開始後，這裡會顯示每位學員每天的任務提交與完成狀態</p></div></section>
+</sc-if>
+<sc-if value="{{o5}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>問題與回饋</h2><div class="empty"><p>活動開始後，學員在卡關求助發的問題會出現在這裡，由你回覆</p></div></section>
+</sc-if>
+<sc-if value="{{o6}}" hint-placeholder-val="{{ false }}">
+<section class="card"><h2>作品審閱</h2><div class="empty"><p>學員提交作品後，你可以在這裡查看並留下建議</p></div></section>
+</sc-if>
+</div>
+<aside class="side">
+<section class="card">
+<h3>提交給主理人確認</h3>
+<p class="small muted">課程規劃填完後，在「課程規劃」分頁提交給王思妤確認。主理人只能確認或退回，不能直接改你的內容。</p>
+<button type="button" class="btn ghost" style="align-self: flex-start" onClick="{{s1}}">前往課程規劃</button>
+</section>
+<section class="card">
+<h3>時間或目標要調整？</h3>
+<p class="small muted">你可以提出調整需求，由主理人決定是否修改活動資料。</p>
+<sc-if value="{{noReq}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn ghost" onClick="{{request}}">提出調整需求</button></sc-if>
+<sc-if value="{{reqSent}}" hint-placeholder-val="{{ false }}"><span class="chip" style="align-self: flex-start"><i>調整需求</i>已送出，等待回覆</span></sc-if>
+</section>
+</aside>
+</div>
+</sc-if>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1900}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { t: 1, req: false }; }
+  renderVals() {
+    const { t, req } = this.state;
+    const v = {
+      noReq: !req, reqSent: req, request: () => this.setState({ req: true }), other: t > 2
+    };
+    for (let i = 1; i <= 6; i++) {
+      v['c' + i] = t === i ? 'cur' : '';
+      v['o' + i] = t === i;
+      v['s' + i] = () => this.setState({ t: i });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

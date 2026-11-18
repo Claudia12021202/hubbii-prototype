@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>分享工作區｜課程規劃</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}.inp{font:inherit;width:100%;min-height:40px;padding:6px 8px;border:1px solid #a9a9a5;border-radius:6px;box-sizing:border-box}</style>
+</helmet>
+<div style="display: flex; flex-direction: column; gap: 20px; font-family: 'Noto Sans TC', system-ui, sans-serif; color: #1f1f1f">
+
+<section class="card" style="padding: 14px 18px">
+<div class="row" style="gap: 8px; flex-wrap: wrap" aria-label="課程規劃進度">
+<sc-for list="{{stages}}" as="g" hint-placeholder-count="4"><span class="chip {{g.cls}}"><i>{{g.no}}</i>{{g.label}}</span><span class="small muted" aria-hidden="true">{{g.arrow}}</span></sc-for>
+</div>
+<span class="small muted">{{stageHint}}</span>
+</section>
+
+<sc-if value="{{isEmpty}}" hint-placeholder-val="{{ true }}">
+<section class="card" style="gap: 14px">
+<div class="col" style="gap: 4px"><h2>還沒開始規劃課程</h2><p class="muted">你已接受王思妤的邀請。請在 <b>12/12（六）23:59</b> 前規劃好 3 天的課程，提交給主理人確認。</p></div>
+<div class="grid2">
+<div class="col" style="gap: 6px; padding: 14px; background: #f4f4f2; border-radius: 10px"><span class="small muted">主理人設定的活動目標</span><b>三天內用手機剪出一支 30 秒短片</b><span class="small muted">12/14–12/16・每晚 19:30–20:30・程度：入門</span></div>
+<div class="col" style="gap: 6px; padding: 14px; background: #f4f4f2; border-radius: 10px"><span class="small muted">王思妤邀請時的留言</span><span class="small">想請你帶三天的手機剪輯。Day 1 拍攝、Day 2 剪輯、Day 3 字幕配樂，細節由你決定。</span></div>
+</div>
+<div class="col" style="gap: 6px"><b class="small">每天要填的內容</b>
+<div class="row" style="gap: 6px; flex-wrap: wrap"><span class="chip">每日主題</span><span class="chip">成果標準</span><span class="chip">交付格式</span><span class="chip">當天任務</span></div>
+<span class="small muted">教材與課前準備在「課程準備」分頁上傳。兩邊都完成後一起送主理人確認。</span></div>
+<button type="button" class="btn" style="align-self: flex-start" onClick="{{start}}">開始規劃</button>
+</section>
+</sc-if>
+
+<sc-if value="{{isEdit}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="3">
+<section class="card" style="gap: 10px; border-color: {{d.ring}}; border-width: {{d.ringW}}">
+<div class="row between"><div class="col" style="gap: 0"><b style="font-size: 18px">{{d.no}}</b><span class="small muted">{{d.date}}・19:30–20:30（主理人設定）</span></div><span class="small muted">{{d.count}}</span></div>
+<sc-for list="{{d.fields}}" as="f" hint-placeholder-count="4"><div class="field"><label for="{{f.id}}">{{f.label}}</label><input class="inp" id="{{f.id}}" value="{{f.val}}" onChange="{{f.on}}" placeholder="{{f.ph}}"></div></sc-for>
+</section>
+</sc-for>
+</div>
+<aside class="side">
+<sc-if value="{{isReturned}}" hint-placeholder-val="{{ false }}">
+<section class="card" style="gap: 8px">
+<h3>王思妤退回了</h3>
+<div class="card" style="padding: 12px; gap: 6px; background: #fff4e5">
+<span class="row" style="gap: 8px"><span class="av" aria-hidden="true">王</span><b class="small">王思妤</b><span class="small muted">Day 2・交付格式</span></span>
+<span class="small">請寫清楚交付格式，例如影片長度、比例、檔案格式，學員才知道要交什麼。</span>
+<sc-if value="{{commentOpen}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px; align-self: flex-start" onClick="{{resolve}}">標記已處理</button></sc-if>
+<sc-if value="{{commentDone}}" hint-placeholder-val="{{ false }}"><span class="small muted">✓ 已處理</span></sc-if>
+</div>
+</section>
+</sc-if>
+<section class="card" style="gap: 10px">
+<div class="row between"><h3>填寫進度</h3><b>{{filled}}／{{total}}</b></div>
+<div class="bar"><span style="width: {{pct}}"></span></div>
+<sc-for list="{{missing}}" as="m" hint-placeholder-count="0"><span class="small muted">・{{m}}</span></sc-for>
+<span class="small muted">{{savedText}}</span>
+<button type="button" class="btn ghost" onClick="{{save}}">儲存草稿</button>
+<button type="button" class="btn" onClick="{{submit}}" disabled="{{cantSubmit}}">{{submitText}}</button>
+<span class="small muted">{{submitHint}}</span>
+<button type="button" class="btn ghost" style="min-height: 36px; font-size: 13px" onClick="{{fillDemo}}">測試用：一鍵填入範例</button>
+</section>
+</aside>
+</div>
+</sc-if>
+
+<sc-if value="{{isRead}}" hint-placeholder-val="{{ false }}">
+<div class="layout">
+<div class="main">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="3">
+<section class="card" style="gap: 6px">
+<div class="col" style="gap: 0"><b style="font-size: 18px">{{d.no}}　{{d.topic}}</b><span class="small muted">{{d.date}}・19:30–20:30</span></div>
+<div class="kv"><span class="small muted">成果標準</span><span>{{d.result}}</span><span class="small muted">交付格式</span><span>{{d.format}}</span><span class="small muted">當天任務</span><span>{{d.task}}</span></div>
+</section>
+</sc-for>
+</div>
+<aside class="side">
+<sc-if value="{{isSubmitted}}" hint-placeholder-val="{{ true }}">
+<section class="card" style="gap: 10px">
+<h3>等待王思妤確認</h3>
+<p class="small muted">已於剛剛提交。主理人只能確認或退回（附原因），不能直接改你的內容。</p>
+<span class="small muted">測試用：模擬主理人的回應</span>
+<button type="button" class="btn ghost" onClick="{{simReturn}}">模擬：主理人退回</button>
+<button type="button" class="btn" onClick="{{simConfirm}}">模擬：主理人確認</button>
+</section>
+</sc-if>
+<sc-if value="{{isConfirmed}}" hint-placeholder-val="{{ false }}">
+<section class="card" style="gap: 10px">
+<h3>王思妤已確認</h3>
+<p class="small muted">學員錄取後就會在活動空間看到每天的課程與任務。</p>
+<button type="button" class="btn ghost" onClick="{{reopen}}">修改內容（需重新送審）</button>
+</section>
+</sc-if>
+</aside>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1200,"height":1200}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    const blank = () => ({ topic: '', result: '', format: '', task: '' });
+    this.state = { st: 'empty', f: [blank(), blank(), blank()], saved: false, cDone: false };
+  }
+  renderVals() {
+    const s = this.state;
+    const DAYS = [['Day 1', '12/14'], ['Day 2', '12/15'], ['Day 3', '12/16']];
+    const FL = [['topic', '每日主題', ['手機拍攝與素材整理', '剪輯節奏與轉場', '字幕、配樂與輸出']], ['result', '成果標準', ['拍好 10 段素材並分類', '完成 30 秒粗剪', '輸出成品並分享']], ['format', '交付格式', ['10 段 3–5 秒影片，分 3 個資料夾', '30 秒、直式 9:16、MP4', '30 秒、直式 9:16、MP4，含字幕與配樂']], ['task', '當天任務', ['拍 10 段生活片段，依人、物、景分類', '把素材剪成 30 秒，至少用兩種轉場', '加字幕和配樂，輸出後分享到作品交流']]];
+    const setF = (i, k) => (e) => { const n = s.f.map((x) => ({ ...x })); n[i][k] = e.target.value; this.setState({ f: n, saved: false }); };
+    const total = 12;
+    const filled = s.f.reduce((a, d) => a + Object.values(d).filter((x) => x.trim()).length, 0);
+    const missing = s.f.map((d, i) => { const m = FL.filter(([k]) => !d[k].trim()).map(([, l]) => l); return m.length ? DAYS[i][0] + '：' + m.join('、') : null; }).filter(Boolean);
+    const isEdit = s.st === 'draft' || s.st === 'returned';
+    const needResolve = s.st === 'returned' && !s.cDone;
+    const ST = ['尚未規劃', '草稿', s.st === 'returned' ? '已退回・待修改' : '待主理人確認', '已確認'];
+    const idx = { empty: 0, draft: 1, submitted: 2, returned: 2, confirmed: 3 }[s.st];
+    const hints = { empty: '接受邀請後從這裡開始。', draft: '邊填邊存，填完 12 個欄位就能提交。', submitted: '已提交，等主理人確認。', returned: '主理人退回了，處理留言並修改後重新提交。', confirmed: '主理人已確認，內容已公開給錄取的學員。' };
+    return {
+      stages: ST.map((l, i) => ({ no: i + 1, label: l, cls: i === idx ? 'on' : '', arrow: i < 3 ? '→' : '' })), stageHint: hints[s.st],
+      isEmpty: s.st === 'empty', isEdit, isRead: s.st === 'submitted' || s.st === 'confirmed',
+      isSubmitted: s.st === 'submitted', isConfirmed: s.st === 'confirmed', isReturned: s.st === 'returned',
+      start: () => this.setState({ st: 'draft' }),
+      days: DAYS.map(([no, date], i) => {
+        const d = s.f[i]; const c = Object.values(d).filter((x) => x.trim()).length;
+        const hl = s.st === 'returned' && i === 1 && !s.cDone;
+        return { no, date, topic: d.topic, result: d.result, format: d.format, task: d.task, count: c + '／4', ring: hl ? '#c2410c' : '#d6d6d2', ringW: hl ? '2px' : '1px',
+          fields: FL.map(([k, label, ex]) => ({ id: 'f' + i + k, label, val: d[k], ph: '例如：' + ex[i], on: setF(i, k) })) };
+      }),
+      filled, total, pct: Math.round(filled / total * 100) + '%', missing,
+      savedText: s.saved ? '草稿已儲存' : filled ? '有尚未儲存的修改' : '',
+      save: () => this.setState({ saved: true }),
+      cantSubmit: filled < total || needResolve,
+      submitText: s.st === 'returned' ? '重新提交給主理人' : '提交給主理人確認',
+      submitHint: filled < total ? '還有 ' + (total - filled) + ' 個欄位沒填' : needResolve ? '先把主理人的留言標記已處理' : '',
+      submit: () => this.setState({ st: 'submitted', saved: true }),
+      fillDemo: () => this.setState({ f: DAYS.map((_, i) => ({ topic: FL[0][2][i], result: FL[1][2][i], format: FL[2][2][i], task: FL[3][2][i] })), saved: false }),
+      commentOpen: !s.cDone, commentDone: s.cDone, resolve: () => this.setState({ cDone: true }),
+      simReturn: () => this.setState({ st: 'returned', cDone: false }), simConfirm: () => this.setState({ st: 'confirmed' }),
+      reopen: () => this.setState({ st: 'draft' })
+    };
+  }
+}
+</script>
+</body>
+</html>

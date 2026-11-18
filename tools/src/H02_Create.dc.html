@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>建立活動</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./wf.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700&amp;display=swap">
+<style>body{margin:0}.inp{font:inherit;width:100%;min-height:40px;padding:6px 8px;border:1px solid #a9a9a5;border-radius:6px;box-sizing:border-box}</style>
+</helmet>
+<div class="pg">
+<dc-import name="TaskNote" hint-size="0px,0px"></dc-import>
+<header class="nav"><div class="nav-in"><a class="logo" href="E01_Explore.dc.html">Hubbii 趣圈</a><nav class="links" aria-label="主要導覽"><a href="E01_Explore.dc.html">探索活動</a><a href="S01_LearnerList.dc.html">我參加的</a><a href="T01_SharerList.dc.html">我分享的</a><a class="cur" href="H01_HostList.dc.html">我主辦的</a></nav><div class="nav-r"><dc-import name="Bell" hint-size="44px,44px"></dc-import><a class="who" href="M01_Member.dc.html"><span class="av" aria-hidden="true">陳</span><span>陳立安</span></a></div></div></header>
+<main class="wrap">
+<div class="row between">
+<p class="crumb"><a href="H01_HostList.dc.html">我主辦的</a> / {{crumbName}} / 設定</p>
+<div class="row" style="gap: 6px; align-items: center"><span class="small muted">示範：切換社群類型</span><div class="tabs" role="group" aria-label="社群類型">
+<sc-for list="{{types}}" as="t" hint-placeholder-count="3"><button type="button" class="{{t.cls}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">{{t.label}}</button></sc-for>
+</div></div>
+</div>
+<section class="card" style="padding: 16px 20px">
+<div class="row between">
+<div class="row" style="gap: 8px; flex-wrap: wrap" aria-label="發布進度">
+<sc-for list="{{stages}}" as="g" hint-placeholder-count="4"><span class="chip {{g.cls}}"><i>{{g.no}}</i>{{g.label}}</span><span class="small muted" aria-hidden="true">{{g.arrow}}</span></sc-for>
+</div>
+<div class="row" style="gap: 8px"><button type="button" class="btn ghost">預覽活動頁</button><button type="button" class="btn" disabled="{{cantPublish}}" onClick="{{publish}}">{{publishText}}</button></div>
+</div>
+<div class="row" style="gap: 10px; align-items: center"><div class="bar" style="flex: 1"><span style="width: {{pct}}"></span></div><span class="small muted">{{doneCount}}／{{secCount}} 區塊完成</span></div>
+<p class="small muted">{{statusHint}}</p>
+</section>
+<div class="layout">
+<aside class="side" style="flex: 1 1 240px; max-width: 280px">
+<nav class="card" style="padding: 10px; gap: 4px" aria-label="設定分區">
+<sc-for list="{{secs}}" as="s" hint-placeholder-count="4"><button type="button" onClick="{{s.pick}}" aria-current="{{s.cur}}" style="font: inherit; text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 48px; padding: 0 12px; border-radius: 8px; border: 0; cursor: pointer; background: {{s.bg}}; font-weight: {{s.fw}}"><span>{{s.no}}. {{s.label}}</span><span class="small" style="color: {{s.stColor}}">{{s.status}}</span></button></sc-for>
+</nav>
+<section class="card" style="padding: 14px">
+<span class="small muted">這類社群的角色</span>
+<p class="small">{{roleLine}}</p>
+</section>
+</aside>
+<div class="main">
+
+<sc-if value="{{o_base}}" hint-placeholder-val="{{ true }}">
+<form class="card" action="#">
+<h2>活動基本資料</h2>
+<div class="field"><label for="nm">活動名稱</label><input id="nm" value="{{name}}" onChange="{{onName}}" placeholder="{{namePh}}"></div>
+<div class="grid3"><div class="col" style="gap: 4px"><span class="small muted">社群類型</span><b>{{typeName}}</b><span class="small muted">建立後不能更改</span></div><div class="field"><label for="tp">主題</label><select id="tp"><option>請選擇</option><option>AI 影音</option><option>設計</option></select></div><div class="field"><label for="lv">程度</label><select id="lv"><option>請選擇</option><option>入門</option><option>基礎</option><option>進階</option></select></div></div>
+<div class="grid3"><div class="field"><label for="ds">開始</label><input id="ds" placeholder="例如：2027/01/04"></div><div class="field"><label for="de">結束</label><input id="de" placeholder="例如：2027/01/07"></div><div class="field"><label for="tm">每日時間</label><input id="tm" placeholder="例如：20:00–21:00"></div></div>
+<div class="field"><label for="gl">活動目標</label><input id="gl" placeholder="{{goalPh}}"></div>
+</form>
+</sc-if>
+
+<sc-if value="{{o_daily}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h2>每日安排</h2>
+<sc-if value="{{modeNone}}" hint-placeholder-val="{{ false }}"><div class="empty"><b>請先在「3. 分享者」選擇由誰分享</b><span class="small muted">自己分享的話要在這裡排課；邀請別人的話由對方規劃。</span><button type="button" class="btn ghost" onClick="{{goSharer}}">回到分享者</button></div></sc-if>
+<sc-if value="{{modeSelf}}" hint-placeholder-val="{{ true }}">
+<p class="small muted">你同時是分享者，請排好每天的主題、課程與任務。學員報名前會在活動詳情看到每天的主題。</p>
+<sc-for list="{{days}}" as="d" hint-placeholder-count="4">
+<div class="card" style="background: #fafaf8; padding: 14px; gap: 10px">
+<b>{{d.day}}</b>
+<div class="grid2"><div class="field"><label for="{{d.id}}t">主題</label><input class="inp" id="{{d.id}}t" placeholder="例如：{{d.dir}}"></div><div class="field"><label for="{{d.id}}r">當天成果</label><input class="inp" id="{{d.id}}r" placeholder="例如：{{d.out}}"></div></div>
+<div class="field"><label for="{{d.id}}c">課程內容</label><input class="inp" id="{{d.id}}c" placeholder="例如：{{d.cls}}"></div>
+<div class="field"><label for="{{d.id}}k">當天任務</label><input class="inp" id="{{d.id}}k" placeholder="例如：{{d.task}}"></div>
+</div>
+</sc-for>
+</sc-if>
+<sc-if value="{{modeInvite}}" hint-placeholder-val="{{ false }}">
+<div class="note"><b class="small">由分享者規劃</b><p class="small">每日課程與任務由{{sharerName}}規劃，完成後你在「活動管理 › 分享內容」確認並公開。這一步不用填，直接按下一步。</p></div>
+<div class="col" style="gap: 4px"><span class="small muted">你在邀請時附上的訊息</span><p class="small" style="white-space: pre-line; padding: 12px; background: #f4f4f2; border-radius: 8px">{{msgShow}}</p></div>
+<p class="small muted">發布後，活動詳情的「課程安排」會先顯示「即將公布」，分享者完成、你確認後才會出現。</p>
+</sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{o_signup}}" hint-placeholder-val="{{ false }}">
+<form class="card" action="#">
+<h2>報名條件與名額</h2>
+<div class="grid2"><div class="field"><label for="q">名額</label><input id="q" placeholder="例如：12"></div><div class="field"><label for="dl">招募截止</label><input id="dl" placeholder="例如：2027/01/02 23:59"></div></div>
+<div class="field"><label for="cd">參與條件</label><input id="cd" placeholder="例如：不限經驗，有電腦即可"></div>
+<label class="check"><input type="checkbox" checked>報名需由我審核</label>
+<div class="field"><label for="fq">報名表問題</label><input id="fq" placeholder="例如：剪輯經驗、想做出什麼、可參加時間"></div>
+</form>
+</sc-if>
+
+<sc-if value="{{o_sharer}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h2>分享者</h2>
+<p class="small muted">興趣社群由 1 位分享者帶全程。你可以自己分享，或邀請別人。</p>
+<fieldset class="fs"><legend>由誰分享？</legend>
+<label class="radio"><input type="radio" name="who" checked="{{modeSelf}}" onChange="{{pickSelf}}" disabled="{{lockMode}}">我自己分享（主理人＋分享者）：下一步要排每日安排</label>
+<label class="radio"><input type="radio" name="who" checked="{{modeInvite}}" onChange="{{pickInvite}}" disabled="{{lockMode}}">邀請其他人分享：每日安排由對方規劃，對方接受後才能發布</label>
+</fieldset>
+<sc-if value="{{showDraftNote}}" hint-placeholder-val="{{ false }}"><p class="note small">你已經填過每日安排，這些內容會在邀請送出後交給分享者當草稿參考，不會刪掉。</p></sc-if>
+<sc-if value="{{modeSelf}}" hint-placeholder-val="{{ false }}"><p class="small muted">分享者會用到的工具（同步教學、學員進度、問題回饋、作品審閱）會放在「活動管理」裡，這個活動不會另外出現在「我分享的」。</p></sc-if>
+<sc-if value="{{inviteForm}}" hint-placeholder-val="{{ false }}">
+<div class="field"><label for="who">邀請誰</label><input class="inp" id="who" placeholder="輸入名稱或 Email，例如：吳佩真" style="min-height: 44px"></div>
+<div class="field"><label for="msg">給分享者的訊息（可附每天的大方向建議）</label><textarea id="msg" value="{{msg}}" onChange="{{onMsg}}" placeholder="例如：&#10;想請你帶四天的 AI 短片實作，目標是每個人完成一支短片。&#10;Day 1 素材準備、Day 2 剪出故事、Day 3 字幕與配樂、Day 4 輸出與互評，細節由你決定。" style="min-height: 120px"></textarea></div>
+<button type="button" class="btn" style="align-self: flex-start" onClick="{{invite}}">送出訊息並邀請</button>
+</sc-if>
+<sc-if value="{{invited}}" hint-placeholder-val="{{ false }}">
+<div class="item"><span class="av" aria-hidden="true">吳</span><div class="grow"><b>吳佩真</b><span class="small muted">12/09 送出邀請・回覆期限 12/16</span></div><span class="chip {{shrCls}}"><i>分享邀請</i>{{shrText}}</span></div>
+<sc-if value="{{notAccepted}}" hint-placeholder-val="{{ true }}"><div class="row" style="gap: 8px"><button type="button" class="btn ghost">提醒對方</button><button type="button" class="btn ghost" onClick="{{cancelInvite}}">取消邀請</button><button type="button" class="btn ghost" onClick="{{simAccept}}">模擬：對方接受</button></div></sc-if>
+</sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{o_sessions}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="col" style="gap: 2px"><h2>場次與分享</h2><p class="small muted">你是主理人也是分享者，負責開場；參加者審核通過後，排進後面的場次輪流分享。</p></div>
+<div class="item"><span class="av" aria-hidden="true">陳</span><div class="grow"><b>陳立安（你）</b><span class="small muted">主理人兼分享者</span></div><span class="chip on"><i>角色</i>主理人＝分享者</span></div>
+<label class="check"><input type="checkbox">參加者也要分享（每人一個技巧）</label>
+<div class="tablebox"><table><thead><tr><th>場次</th><th>時間</th><th>主題</th><th>誰分享</th></tr></thead><tbody>
+<tr><td><b>第 1 場</b></td><td><input class="inp" aria-label="第 1 場時間" placeholder="例如：1/10 20:00"></td><td><input class="inp" aria-label="第 1 場主題" placeholder="例如：AI 剪輯流程（開場）"></td><td class="small">你</td></tr>
+<tr><td><b>第 2 場</b></td><td><input class="inp" aria-label="第 2 場時間" placeholder="例如：1/11 20:00"></td><td><input class="inp" aria-label="第 2 場主題" placeholder="例如：參加者輪流分享"></td><td class="small muted">審核後指派</td></tr>
+<tr><td><b>第 3 場</b></td><td><input class="inp" aria-label="第 3 場時間" placeholder="例如：1/12 20:00"></td><td><input class="inp" aria-label="第 3 場主題" placeholder="例如：參加者輪流分享"></td><td class="small muted">審核後指派</td></tr>
+</tbody></table></div>
+</section>
+</sc-if>
+
+<sc-if value="{{o_questions}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="col" style="gap: 2px"><h2>報名問題與審核</h2><p class="small muted">問題由你設計；每個報名都要你審核，確認對方有東西可以分享。</p></div>
+<div class="grid2"><div class="field"><label for="sq">名額</label><input id="sq" placeholder="例如：10"></div><div class="field"><label for="sd">招募截止</label><input id="sd" placeholder="例如：2027/01/08 23:59"></div></div>
+<label class="check"><input type="checkbox" checked disabled>報名需由我審核（技能分享社群必開）</label>
+<sc-for list="{{qs}}" as="q" hint-placeholder-count="1"><div class="row" style="gap: 8px"><span class="small muted" style="width: 24px">{{q.no}}</span><input class="inp" aria-label="問題 {{q.no}}" placeholder="例如：{{q.text}}" style="flex: 1"><select aria-label="問題 {{q.no}} 的回答形式" style="font: inherit; min-height: 40px; border: 1px solid #a9a9a5; border-radius: 6px; padding: 0 8px"><option>簡答</option><option>單選</option><option>複選</option><option>連結</option></select><label class="check small" style="white-space: nowrap"><input type="checkbox">必填</label></div></sc-for>
+<div class="row" style="gap: 8px"><button type="button" class="btn ghost" onClick="{{addQ}}">＋ 新增問題</button><button type="button" class="btn ghost" onClick="{{removeQ}}">－ 刪最後一題</button></div>
+</section>
+</sc-if>
+
+<sc-if value="{{o_result}}" hint-placeholder-val="{{ false }}">
+<form class="card" action="#">
+<h2>成果標準</h2>
+<div class="field"><label for="rs">完成活動的標準</label><input id="rs" placeholder="例如：{{resultText}}"></div>
+<div class="field"><label for="fm">提交形式</label><input id="fm" placeholder="例如：{{resultForm}}"></div>
+</form>
+</sc-if>
+
+<sc-if value="{{o_brief}}" hint-placeholder-val="{{ false }}">
+<form class="card" action="#">
+<div class="col" style="gap: 2px"><h2>作品題目與交付物</h2><p class="small muted">任務社群不需要分享者，由你出題並帶各隊。</p></div>
+<div class="field"><label for="tt">這次要一起完成什麼</label><input id="tt" placeholder="例如：為一家咖啡店做一支 30 秒開幕宣傳短片"></div>
+<div class="grid2"><div class="field"><label for="td">交付物</label><input id="td" placeholder="例如：一支 30 秒短片＋一張宣傳圖"></div><div class="field"><label for="tpz">發表方式</label><input id="tpz" placeholder="例如：最後一天線上發表，每隊 5 分鐘"></div></div>
+</form>
+</sc-if>
+
+<sc-if value="{{o_members}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<div class="col" style="gap: 2px"><h2>報名條件與名額：要找哪些成員</h2><p class="small muted">每個角色寫清楚需要會什麼、報名要附什麼。學員報名時選角色，你對照條件審核。</p></div>
+<sc-for list="{{roles}}" as="r" hint-placeholder-count="1">
+<div class="card" style="background: #fafaf8; padding: 14px; gap: 10px">
+<div class="row" style="gap: 8px"><input class="inp" aria-label="角色 {{r.no}} 名稱" placeholder="角色名稱，例如：{{r.name}}" style="flex: 1; font-weight: 600"><label class="small muted" for="{{r.id}}">每隊</label><input class="inp" id="{{r.id}}" placeholder="1" style="width: 64px"><span class="small muted">人</span></div>
+<div class="field"><label for="{{r.id}}c">需要會什麼</label><input class="inp" id="{{r.id}}c" placeholder="例如：{{r.need}}"></div>
+<div class="field"><label for="{{r.id}}p">報名時要附</label><input class="inp" id="{{r.id}}p" placeholder="例如：{{r.proof}}"></div>
+</div>
+</sc-for>
+<div class="row" style="gap: 8px"><button type="button" class="btn ghost" onClick="{{addRole}}">＋ 新增角色</button><button type="button" class="btn ghost" onClick="{{removeRole}}">－ 刪最後一個角色</button></div>
+<div class="grid2"><div class="field"><label for="tq">總名額</label><input id="tq" placeholder="例如：12"></div><div class="col" style="gap: 4px; justify-content: flex-end"><span class="small muted">每隊人數與隊數</span><span class="small">填完角色人數後自動計算</span></div></div>
+<label class="check"><input type="checkbox" checked>報名需由我審核</label>
+</section>
+</sc-if>
+
+<sc-if value="{{o_teams}}" hint-placeholder-val="{{ false }}">
+<section class="card">
+<h2>分隊與里程碑</h2>
+<label class="radio"><input type="radio" name="tmode" checked>我依角色分隊（每隊各角色都有人）</label>
+<label class="radio"><input type="radio" name="tmode">學員自己組隊</label>
+<div class="tablebox"><table><thead><tr><th>日期</th><th>里程碑</th><th>誰給回饋</th></tr></thead><tbody>
+<tr><td>Day 1</td><td><input class="inp" aria-label="Day 1 里程碑" placeholder="例如：認識隊友、確認分工與企劃"></td><td class="small">你</td></tr>
+<tr><td>Day 2</td><td><input class="inp" aria-label="Day 2 里程碑" placeholder="例如：期中檢查：交初剪"></td><td class="small">你</td></tr>
+<tr><td>Day 3</td><td><input class="inp" aria-label="Day 3 里程碑" placeholder="例如：成果發表"></td><td class="small">你＋各隊互評</td></tr>
+</tbody></table></div>
+</section>
+</sc-if>
+
+<div class="row between">
+<button type="button" class="btn ghost" onClick="{{prevSec}}" disabled="{{isFirst}}">← 上一步</button>
+<div class="row" style="gap: 8px; align-items: center"><span class="small muted">{{nextHint}}</span><sc-if value="{{notLast}}" hint-placeholder-val="{{ true }}"><button type="button" class="btn" onClick="{{nextSec}}" disabled="{{cantNext}}">{{nextText}}</button></sc-if><sc-if value="{{lastSec}}" hint-placeholder-val="{{ false }}"><a class="btn" href="H01_HostList.dc.html" onClick="{{nextSec}}">完成，回到我主辦的活動</a></sc-if></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { ty: 'int', sec: 'base', done: {}, inv: false, acc: false, pub: false, qn: 1, roles: 1, name: '', mode: '', msg: '', draftNote: false }; }
+  renderVals() {
+    const s = this.state;
+    const CFG = {
+      int: { name: '興趣社群', namePh: '例如：AI 短片作品集互評週', goalPh: '例如：四天內每個人完成一支自己的短片',
+        role: '主理人可以自己分享（要排每日安排），或邀請 1 位分享者帶全程（由對方規劃）；參加者是學習者。',
+        secs: [['base', '活動基本資料'], ['signup', '報名條件與名額'], ['sharer', '分享者'], ['daily', '每日安排'], ['result', '成果標準']],
+        result: ['每個人完成一支 30–60 秒的短片，並交滿每日任務', '影片連結＋一段創作說明'] },
+      skl: { name: '技能分享社群', namePh: '例如：AI 剪輯技巧交換夜', goalPh: '例如：每個人帶走 3 個別人的剪輯技巧',
+        role: '主理人＝分享者（負責開場）；參加者＝分享者＋學習者，輪流分享也互相學。',
+        secs: [['base', '活動基本資料'], ['sessions', '場次與分享'], ['questions', '報名問題與審核'], ['result', '成果標準']],
+        result: ['每位參加者完成一次分享', '分享簡報或示範影片連結（選填）'] },
+      tsk: { name: '任務社群', namePh: '例如：咖啡店開幕短片挑戰', goalPh: '例如：每隊合力完成一支短片並發表',
+        role: '不需要分享者。主理人出題、設定角色條件、分隊並給回饋；參加者選角色報名。',
+        secs: [['base', '活動基本資料'], ['brief', '作品題目'], ['members', '要找哪些成員'], ['teams', '分隊與里程碑']], result: ['', ''] }
+    };
+    const c = CFG[s.ty];
+    const ids = c.secs.map((x) => x[0]);
+    const cur = ids.includes(s.sec) ? s.sec : 'base';
+    const idx = ids.indexOf(cur);
+    const doneCount = ids.filter((id) => s.done[id]).length;
+    const allDone = doneCount === ids.length;
+    const needsSharer = s.ty === 'int' && s.mode === 'invite';
+    const ST = needsSharer ? ['草稿', '等分享者接受', '可以發布', '已發布・招募中'] : ['草稿', '可以發布', '已發布・招募中'];
+    const stage = s.pub ? ST.length : !allDone ? 1 : needsSharer && !s.acc ? 2 : ST.length - 1;
+    const canPub = allDone && (!needsSharer || s.acc) && !s.pub;
+    const left = c.secs.filter(([id]) => !s.done[id]).map(([, l]) => l);
+    const hint = s.pub ? '已發布並開始招募。' : !allDone ? '還有 ' + left.length + ' 個區塊未完成：' + left.join('、') : needsSharer && !s.acc ? '區塊都完成了，等分享者接受邀請後就能發布。' : needsSharer ? '全部完成，可以發布。發布後課程安排先顯示「即將公布」，分享者規劃好、你確認後再公開。' : '全部完成，可以發布了。';
+    const isLast = idx === ids.length - 1;
+    const sharerBlock = cur === 'sharer' && (s.mode === '' || (s.mode === 'invite' && !s.inv));
+    const dailyBlock = cur === 'daily' && s.mode === '';
+    const Q = ['你可以分享什麼技巧？', '想從別人身上學到什麼？', '附上作品或經驗連結', '可以參加的場次', '剪輯經驗多久？', '還有想跟主理人說的嗎？'];
+    const R = [['剪輯師', '會用 CapCut 或 Premiere，能剪 30 秒以內的節奏短片', '1 支自己剪的影片連結'], ['設計師', '會用 Figma 或 Canva，能做宣傳圖與字卡', '作品集連結'], ['企劃／文案', '能寫腳本與分鏡、帶隊開會', '寫過的腳本或貼文'], ['攝影', '會用手機或相機拍穩定畫面', '3 張照片或 1 段素材'], ['配樂／音效', '會找授權音樂、做簡單混音', '做過的影片連結']];
+    const v = {
+      name: s.name, onName: (e) => this.setState({ name: e.target.value }), crumbName: s.name || '未命名活動',
+      typeName: c.name, namePh: c.namePh, goalPh: c.goalPh, roleLine: c.role,
+      types: [['int', '興趣'], ['skl', '技能分享'], ['tsk', '任務']].map(([k, l]) => ({ label: l, on: s.ty === k, cls: s.ty === k ? 'cur' : '', pick: () => this.setState({ ty: k, sec: 'base', done: {}, inv: false, acc: false, pub: false, mode: '', msg: '', draftNote: false }) })),
+      stages: ST.map((l, i) => ({ no: i + 1, label: l, cls: i + 1 === stage ? 'on' : '', arrow: i < ST.length - 1 ? '→' : '' })),
+      doneCount, secCount: ids.length, pct: Math.round(doneCount / ids.length * 100) + '%',
+      secs: c.secs.map(([id, l], i) => {
+        const d = !!s.done[id];
+        const st = id === 'sharer' && s.inv ? (s.acc ? '已接受' : '待回覆') : id === 'daily' && s.mode === 'invite' ? (d ? '✓ 由分享者規劃' : '由分享者規劃') : d ? '✓ 已完成' : cur === id ? '填寫中' : '未完成';
+        return { no: i + 1, label: l, status: st, stColor: d ? '#1f1f1f' : '#5c5c58', cur: cur === id ? 'page' : 'false', bg: cur === id ? '#f4f4f2' : 'transparent', fw: cur === id ? 600 : 400, pick: () => this.setState({ sec: id }) };
+      }),
+      modeNone: s.mode === '', modeSelf: s.mode === 'self', modeInvite: s.mode === 'invite', lockMode: s.inv,
+      pickSelf: () => this.setState({ mode: 'self', draftNote: false }), pickInvite: () => this.setState({ mode: 'invite', draftNote: !!s.done.daily }),
+      showDraftNote: s.draftNote && s.mode === 'invite', goSharer: () => this.setState({ sec: 'sharer' }),
+      inviteForm: s.mode === 'invite' && !s.inv, msg: s.msg, onMsg: (e) => this.setState({ msg: e.target.value }),
+      msgShow: s.inv ? (s.msg || '（沒有附上訊息）') : '（還沒送出邀請）', sharerName: s.inv ? '分享者吳佩真' : '分享者',
+      invited: s.inv, invite: () => this.setState({ inv: true }), cancelInvite: () => this.setState({ inv: false, acc: false, done: { ...s.done, sharer: false } }),
+      shrText: s.acc ? '已接受' : '待回覆', shrCls: s.acc ? 'on' : '', notAccepted: !s.acc, simAccept: () => this.setState({ acc: true }),
+      cantPublish: !canPub, publishText: s.pub ? '已發布' : '發布活動', publish: () => this.setState({ pub: true }), statusHint: hint,
+      days: [['入門與素材準備', '拍好 10 段素材並分類', '構圖與素材分類示範', '拍 10 段 3–5 秒生活片段'], ['剪出故事', '完成 30 秒粗剪', '用音樂抓剪點、兩種轉場', '把素材剪成 30 秒'], ['字幕與配樂', '加上字幕與配樂', '字幕排版、找授權音樂', '幫粗剪加字幕和配樂'], ['輸出與分享', '輸出成品並互評', '輸出設定、互評方式', '上傳成品並回饋 2 位同學']].map(([dir, out, cls, task], i) => ({ id: 'd' + i, day: 'Day ' + (i + 1), dir, out, cls, task })),
+      qs: Q.slice(0, s.qn).map((text, i) => ({ no: i + 1, text })),
+      addQ: () => this.setState({ qn: Math.min(6, s.qn + 1) }), removeQ: () => this.setState({ qn: Math.max(1, s.qn - 1) }),
+      roles: R.slice(0, s.roles).map(([name, need, proof], i) => ({ id: 'r' + i, no: i + 1, name, need, proof })),
+      addRole: () => this.setState({ roles: Math.min(5, s.roles + 1) }), removeRole: () => this.setState({ roles: Math.max(1, s.roles - 1) }),
+      resultText: c.result[0], resultForm: c.result[1],
+      isFirst: idx === 0, prevSec: () => this.setState({ sec: ids[Math.max(0, idx - 1)] }),
+      cantNext: sharerBlock || dailyBlock || (isLast && s.done[cur]),
+      nextText: isLast ? (s.done[cur] ? '已完成' : '完成這個區塊') : '下一步 →',
+      notLast: !isLast, lastSec: isLast,
+      nextHint: isLast ? (s.pub ? '' : canPub ? '還沒發布，回去後會存成草稿' : '會存成草稿，之後可以回來繼續') : cur === 'sharer' && s.mode === '' ? '先選擇由誰分享' : sharerBlock ? '先送出邀請才能繼續' : dailyBlock ? '先選擇分享者' : '',
+      nextSec: () => this.setState({ done: { ...s.done, [cur]: true }, sec: isLast ? cur : ids[idx + 1] })
+    };
+    ['base', 'daily', 'signup', 'sharer', 'sessions', 'questions', 'result', 'brief', 'members', 'teams'].forEach((id) => { v['o_' + id] = cur === id; });
+    return v;
+  }
+}
+</script>
+</body>
+</html>
